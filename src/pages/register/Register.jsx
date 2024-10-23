@@ -9,11 +9,10 @@ import Swal from "sweetalert2";
 import { useRegisterMutation } from "../../redux/features/auth/authApiSlice";
 
 const Register = () => {
-
   const [hide, setHide] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [register,response] = useRegisterMutation();
+  const [register, response] = useRegisterMutation();
 
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const Register = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    setIsLoading(true)
+    setIsLoading(true);
     setError("");
     e.preventDefault();
 
@@ -75,16 +74,19 @@ const Register = () => {
       }
     }
 
-    const res = await register(data)?.unwrap();
-    console.log(res);
-    
-    if (res) {
-      localStorage.setItem("ODL-LLM-USER", res?.user);
-      Swal.fire("Successfully Registration Done!", "Success!", "success");
-      e.target.reset();
-      navigate("/login");
+    try {
+      const res = await register(data)?.unwrap();
+      console.log(res);
+
+      if (res) {
+        Swal.fire("Successfully Registration Done!", "Success!", "success");
+        e.target.reset();
+        navigate("/login");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
     }
-    setIsLoading(false)
   };
 
   return (
