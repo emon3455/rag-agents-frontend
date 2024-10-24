@@ -61,7 +61,7 @@ const AgentPage = () => {
 
       {!loading && !error && (
         <div className="grid gap-4 sm:grid-cols-2">
-          {agents.length > 0 ? (
+          {agents.length < 0 ? (
             agents.map((agent) => (
               <div
                 key={agent.id}
@@ -88,7 +88,12 @@ const AgentPage = () => {
               </div>
             ))
           ) : (
-            <p>No agents found.</p>
+            <CButton
+              onClick={handleCreateAgent}
+              className="border py-24 hover:bg-orange-500 overflow-hidden rounded-lg transition-all duration-300 hover:text-white"
+            >
+              <BsPlus size={22} /> Create Agent
+            </CButton>
           )}
         </div>
       )}
