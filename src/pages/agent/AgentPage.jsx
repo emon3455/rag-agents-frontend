@@ -62,15 +62,23 @@ const AgentPage = () => {
         <div className="grid gap-4 sm:grid-cols-2">
           {agents.length > 0 ? (
             agents.map((agent) => (
-              <div key={agent.id} className="border p-4 rounded-md shadow">
+              <div
+                key={agent.id}
+                className="group relative border  rounded-md shadow-md overflow-hidden"
+              >
                 {/* Display a random image for each agent */}
                 <img
                   src={getRandomImage()}
                   alt="Agent"
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  className="w-full h-48 object-cover rounded-md "
                 />
-                <h2 className="font-semibold">{agent.agent_name}</h2>
-                <p>{agent.description}</p>
+                {/* Overlay content - hidden by default, shown on hover */}
+                <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-60 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4 rounded-md">
+                  <h2 className="font-semibold text-lg mb-2">
+                    {agent.agent_name}
+                  </h2>
+                  <p>{agent.description}</p>
+                </div>
               </div>
             ))
           ) : (
