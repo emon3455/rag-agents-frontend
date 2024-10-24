@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAskQuestionMutation } from "../../redux/features/agent/agentApiSlice";
 import { FiSend } from "react-icons/fi";
@@ -7,6 +7,7 @@ const ConversationPage = () => {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const messageEndRef = useRef(null);
 
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
 
@@ -19,7 +20,6 @@ const ConversationPage = () => {
     };
 
     setMessages([...messages, { text: input, sender: "user" }]);
-
     setInput("");
 
     try {
@@ -32,6 +32,10 @@ const ConversationPage = () => {
       console.error("Error fetching the agent response:", error);
     }
   };
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="max-w-2xl mx-auto p-4 border rounded-lg h-[480px] flex flex-col">
@@ -68,11 +72,12 @@ const ConversationPage = () => {
               alt="Agent"
               className="w-8 h-8 rounded-full mr-2"
             />
-            <div className="rounded-lg px-4 py-2 text-gray-700 max-w-xs flex items-center">
-              <div className="animate-bounce text-2xl font-bold">...</div>
+            <div className="flex items-center">
+              <p className="animate-pulse">Thinking...</p>
             </div>
           </div>
         )}
+        <div ref={messageEndRef} /> {/* This is the reference for scrolling */}
       </div>
       <div className="flex items-center relative">
         <textarea
