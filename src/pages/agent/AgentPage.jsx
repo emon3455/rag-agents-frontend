@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BsPlus } from "react-icons/bs";
+import CButton from "../../utils/CButton/CButton";
 
 const AgentPage = () => {
   const [agents, setAgents] = useState([]);
@@ -7,7 +8,7 @@ const AgentPage = () => {
   const [error, setError] = useState(null);
 
   const imgUrls = [
-    "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=1490&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    // "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=1490&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
   ];
 
@@ -73,11 +74,16 @@ const AgentPage = () => {
                   className="w-full h-48 object-cover rounded-md "
                 />
                 {/* Overlay content - hidden by default, shown on hover */}
-                <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-60 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4 rounded-md">
+                <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-30 hover:bg-opacity-60 text-white  opacity-100 transition duration-300 p-4 rounded-md">
                   <h2 className="font-semibold text-lg mb-2">
                     {agent.agent_name}
                   </h2>
-                  <p>{agent.description}</p>
+                  <CButton
+                    variant={"outline"}
+                    // loading={isLoading}
+                  >
+                    Start Conversation
+                  </CButton>
                 </div>
               </div>
             ))
