@@ -37,7 +37,7 @@ const AgentPage = () => {
   }, []);
 
   const handleCreateAgent = () => {
-    console.log("Create Agent clicked");
+    navigate("/create-agent");
   };
 
   // Helper function to get a random image URL from the imgUrls array
