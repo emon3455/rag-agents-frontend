@@ -92,12 +92,12 @@ const Register = () => {
   return (
     <>
       <div className="absolute top-5 left-5 text-white z-20">
-        <Link to="/" className="text-white text-2xl">
+        <Link to="/" className="text-orange-500 text-2xl">
           <FaHome />
         </Link>
       </div>
       <section className="flex flex-col lg:flex-row min-h-screen">
-        <div className="hidden lg:flex bg-gray-700 min-h-screen w-full lg:w-1/2  justify-center items-center relative">
+        <div className="hidden lg:flex bg-black min-h-screen w-full lg:w-1/2  justify-center items-center relative">
           <div className="w-full lg:w-3/5">
             <img
               src="https://i.ibb.co/4ZnGHQ1/cute-ai-robot-chatbot-reading-book-isolated-transparent-background-879541-929-removebg-preview.png"
@@ -107,11 +107,11 @@ const Register = () => {
           </div>
         </div>
 
-        <div className="bg-white min-h-screen w-full lg:w-2/5 mx-auto grid grid-cols-1 items-center p-2">
-          <div className="border rounded p-4">
+        <div className="bg-gray-200 min-h-screen w-full lg:w-1/2 mx-auto grid grid-cols-1 items-center p-2">
+          <div className="border rounded border-white p-4 w-4/5 mx-auto">
             <form onSubmit={handleSubmit} className="card-body ">
               <h2 className="text-xl lg:text-xl font-bold text-center">
-                Join Our <span className="text-secondary">ODL</span> AI Family
+                Join Our <span className="text-orange-500">ODL</span> AI Family
               </h2>
 
               <p className="text-xs text-red-600 text-center">{error}</p>
@@ -200,7 +200,7 @@ const Register = () => {
             </form>
             <p className="text-center my-2 text-sm">
               Already Have an Account ?{" "}
-              <Link to="/login" className="text-secondary font-semibold">
+              <Link to="/login" className="text-orange-500 font-semibold">
                 Login
               </Link>
             </p>
