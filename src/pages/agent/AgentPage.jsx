@@ -46,7 +46,7 @@ const AgentPage = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Agents</h1>
+        <h1 className="text-2xl font-semibold">My Agents</h1>
         <button
           onClick={handleCreateAgent}
           className="flex items-center gap-2 bg-orange-500 text-white rounded-md py-2 px-4"
