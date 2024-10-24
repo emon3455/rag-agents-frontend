@@ -61,7 +61,7 @@ const AgentPage = () => {
 
       {!loading && !error && (
         <div className="grid gap-4 sm:grid-cols-2">
-          {agents.length < 0 ? (
+          {agents.length > 0 ? (
             agents.map((agent) => (
               <div
                 key={agent.id}
