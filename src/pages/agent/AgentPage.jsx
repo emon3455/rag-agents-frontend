@@ -8,7 +8,6 @@ const AgentPage = () => {
   const [error, setError] = useState(null);
 
   const imgUrls = [
-    // "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=1490&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
   ];
 
@@ -45,7 +44,7 @@ const AgentPage = () => {
   };
 
   return (
-    <div className="mt-16 p-4">
+    <div className="p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Agents</h1>
         <button
@@ -60,8 +59,8 @@ const AgentPage = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {agents.length > 0 ? (
+        <div className="grid gap-4 sm:grid-cols-4">
+          {agents.length > 0 &&
             agents.map((agent) => (
               <div
                 key={agent.id}
@@ -86,15 +85,16 @@ const AgentPage = () => {
                   </CButton>
                 </div>
               </div>
-            ))
-          ) : (
-            <CButton
-              onClick={handleCreateAgent}
-              className="border py-24 hover:bg-orange-500 overflow-hidden rounded-lg transition-all duration-300 hover:text-white"
-            >
-              <BsPlus size={22} /> Create Agent
-            </CButton>
-          )}
+            ))}
+
+          <CButton
+            onClick={handleCreateAgent}
+            className="border-2 py-24 hover:border-orange-400 overflow-hidden rounded-lg transition-all duration-300 hover:text-secondary flex flex-col"
+            fontSize={'text-xl'}
+          >
+            <p><BsPlus fontSize={'35px'} /></p>
+            <p>Create Agent</p>
+          </CButton>
         </div>
       )}
     </div>
