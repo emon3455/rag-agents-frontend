@@ -2,6 +2,7 @@ import { useState } from "react";
 import CInput from "../../utils/CInput/CInput";
 import CTextArea from "../../utils/CTextArea/CTextArea";
 import CButton from "../../utils/CButton/CButton";
+import { useCreateAgentMutation } from "../../redux/features/agent/agentApiSlice"; // Import mutation hook
 
 const CreateAgentPage = () => {
   // State for form fields
@@ -10,7 +11,9 @@ const CreateAgentPage = () => {
   const [prompt, setPrompt] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  // Use mutation hook from Redux
+  const [createAgent, { isLoading }] = useCreateAgentMutation();
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -24,32 +27,16 @@ const CreateAgentPage = () => {
       knowledge,
       prompt,
     };
-    setLoading(true);
-    try {
-      // Send POST request using fetch
-      const response = await fetch(
-        "https://rag-agent-js.vercel.app/api/agents",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newAgent),
-        }
-      );
 
-      if (response.ok) {
-        setSuccess("Agent created successfully!");
-        setAgentName("");
-        setKnowledge("");
-        setPrompt("");
-      } else {
-        setError("Failed to create agent. Please try again.");
-      }
+    try {
+      // Send the agent creation request using the createAgent mutation
+      await createAgent(newAgent).unwrap(); // unwrap to handle async behavior
+      setSuccess("Agent created successfully!");
+      setAgentName("");
+      setKnowledge("");
+      setPrompt("");
     } catch (err) {
       setError("Failed to create agent. Please try again.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -94,7 +81,7 @@ const CreateAgentPage = () => {
           type="submit"
           variant="outline"
           className="rounded-md w-full"
-          loading={loading}
+          loading={isLoading} // Use the loading state from Redux
         >
           Create Agent
         </CButton>
