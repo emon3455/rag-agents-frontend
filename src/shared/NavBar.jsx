@@ -13,8 +13,7 @@ const Navbar = () => {
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <Link to="/home" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400">Home</Link>
-              <Link to="/" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400">Services</Link>
+              <Link to="/" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400">Home</Link>
               <Link to="/agent" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400">Agent</Link>
               <Link to="/login" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400">Login</Link>
             </div>
