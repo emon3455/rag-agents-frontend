@@ -6,6 +6,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import AgentPage from "../pages/agent/AgentPage";
+import ConversationPage from "../pages/conversation/ConversationPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/agent",
         element: <AgentPage />,
+      },
+      {
+        path: `/conversation/:id`,
+        element: <ConversationPage />,
       },
     ],
   },
