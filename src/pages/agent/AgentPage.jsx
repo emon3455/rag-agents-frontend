@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { BsPlus } from "react-icons/bs";
 import CButton from "../../utils/CButton/CButton";
+import { useNavigate } from "react-router-dom";
 
 const AgentPage = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const imgUrls = [
     // "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=1490&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -44,6 +46,10 @@ const AgentPage = () => {
     return imgUrls[randomIndex];
   };
 
+  const handleStartConversation = (agentId) => {
+    navigate(`/conversation/${agentId}`);
+  };
+
   return (
     <div className="mt-16 p-4">
       <div className="flex justify-between items-center mb-6">
@@ -66,7 +72,7 @@ const AgentPage = () => {
               <p className="text-3xl">Create your agent</p>
               <p className="opacity-65 mt-6">
                 Craft a unique AI agent of your own by uploading your data and{" "}
-                <br />
+                <br className="hidden lg:block" />
                 effortlessly customizing its appearance and personality.
               </p>
             </div>
@@ -116,6 +122,7 @@ const AgentPage = () => {
                     </h2>
                     <CButton
                       variant={"outline"}
+                      onClick={() => handleStartConversation(agent._id)}
                       // loading={isLoading}
                     >
                       Start Conversation
