@@ -10,7 +10,6 @@ const AgentPage = () => {
   const navigate = useNavigate();
 
   const imgUrls = [
-    // "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=1490&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
   ];
 
@@ -51,9 +50,9 @@ const AgentPage = () => {
   };
 
   return (
-    <div className="mt-16 p-4">
+    <div className="p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Agents</h1>
+        <h1 className="text-2xl font-semibold">My Agents</h1>
         <button
           onClick={handleCreateAgent}
           className="flex items-center gap-2 bg-orange-500 text-white rounded-md py-2 px-4"
@@ -79,34 +78,29 @@ const AgentPage = () => {
             <div className="w-1/3 flex items-center gap-6 justify-end mr-4">
               <div className="space-y-4 py-3">
                 <img
-                  src={
-                    "https://img.freepik.com/free-photo/cartoon-ai-robot-scene_23-2151675076.jpg?ga=GA1.1.522172574.1729754806&semt=ais_hybrid"
-                  }
-                  alt=""
+                  src="https://img.freepik.com/free-photo/cartoon-ai-robot-scene_23-2151675076.jpg?ga=GA1.1.522172574.1729754806&semt=ais_hybrid"
+                  alt="Agent"
                   className="max h-20 rounded-lg shadow-[0px_0px_5px_1px_cyan]"
                 />
                 <img
-                  src={
-                    "https://img.freepik.com/free-vector/graident-ai-robot-vectorart_78370-4114.jpg?t=st=1729769273~exp=1729772873~hmac=7dd547cf4755352b4f17367f9247d38f8ef10f7932b02f4b6ba5e1f002b76399&w=740"
-                  }
-                  alt=""
+                  src="https://img.freepik.com/free-vector/graident-ai-robot-vectorart_78370-4114.jpg?t=st=1729769273~exp=1729772873~hmac=7dd547cf4755352b4f17367f9247d38f8ef10f7932b02f4b6ba5e1f002b76399&w=740"
+                  alt="Agent"
                   className="max h-20 rounded-lg shadow-[0px_0px_5px_1px_cyan]"
                 />
               </div>
               <img
-                src={
-                  "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
-                }
-                alt=""
+                src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
+                alt="Agent"
                 className="max-h-28 rounded-lg  shadow-[0px_0px_5px_1px_cyan]"
               />
             </div>
           </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             {agents.length > 0 ? (
               agents.map((agent) => (
                 <div
-                  key={agent.id}
+                  key={agent._id} // <-- Corrected key usage here
                   className="group relative border  rounded-md shadow-md overflow-hidden"
                 >
                   {/* Display a random image for each agent */}
@@ -123,7 +117,6 @@ const AgentPage = () => {
                     <CButton
                       variant={"outline"}
                       onClick={() => handleStartConversation(agent._id)}
-                      // loading={isLoading}
                     >
                       Start Conversation
                     </CButton>

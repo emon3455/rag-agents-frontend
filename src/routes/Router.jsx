@@ -6,7 +6,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import AgentPage from "../pages/agent/AgentPage";
-import CreateAgentPage from "../pages/agent/CreateAgentPage";
+import ConversationPage from "../pages/conversation/ConversationPage";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <AgentPage />,
       },
       {
-        path: "/create-agent",
-        element: <CreateAgentPage />,
+        path: `/conversation/:id`,
+        element: <ConversationPage />,
       },
     ],
   },
