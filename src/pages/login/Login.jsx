@@ -75,7 +75,7 @@ const Login = () => {
         dispatch(setUser(res?.user));
         Swal.fire("Successfully Logged In!", "Success!", "success");
         e.target.reset();
-        navigate("/");
+        navigate("/agent");
       }
     } catch (err) {
       setIsLoading(false);
