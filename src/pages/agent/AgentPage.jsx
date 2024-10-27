@@ -53,7 +53,7 @@ const AgentPage = () => {
 
       {!isLoading && !isError && (
         <>
-          <div className="bg-gray-950 mb-10 rounded-lg text-white flex justify-between gap-4 max-w-screen-xl mx-auto">
+          <div className="bg-gray-950 mb-10 rounded-lg text-white flex flex-col-reverse lg:flex-row justify-between gap-4 max-w-screen-xl mx-auto">
             <div className="p-8">
               <p className="text-3xl">Create your agent</p>
               <p className="opacity-65 mt-6">
@@ -62,8 +62,8 @@ const AgentPage = () => {
                 effortlessly customizing its appearance and personality.
               </p>
             </div>
-            <div className="w-1/3 flex items-center gap-6 justify-end mr-4">
-              <div className="space-y-4 py-3">
+            <div className="w-full lg:w-1/3 flex items-center gap-6 justify-end mr-4">
+              <div className="space-y-4 py-3 ml-auto lg:ml-0">
                 <img
                   src="https://img.freepik.com/free-photo/cartoon-ai-robot-scene_23-2151675076.jpg?ga=GA1.1.522172574.1729754806&semt=ais_hybrid"
                   alt="AI Robot"
@@ -78,7 +78,7 @@ const AgentPage = () => {
               <img
                 src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
                 alt="AI Robot"
-                className="max-h-28 rounded-lg  shadow-[0px_0px_5px_1px_cyan]"
+                className="max-h-28 rounded-lg  shadow-[0px_0px_5px_1px_cyan] mr-auto lg:mr-0"
               />
             </div>
           </div>
