@@ -41,10 +41,10 @@ const CreateAgentPage = () => {
   };
 
   return (
-    <div className="mt-16 py-8 bg-black">
+    <div className="mt-16 py-8">
       <form
         onSubmit={handleSubmit}
-        className="max-w-3xl mx-auto  p-5 rounded-lg space-y-2 bg-black border-2 border-secondary text-white"
+        className="max-w-3xl mx-auto  p-5 rounded-lg space-y-2 border-2 border-secondary"
       >
         <p className="text-2xl text-center mb-4">Create Agent</p>
 
@@ -59,7 +59,7 @@ const CreateAgentPage = () => {
           placeholder="Enter your agent's name"
           value={agentName}
           onChange={(e) => setAgentName(e.target.value)}
-          className="bg-black border border-secondary h-10"
+          className=" border border-secondary h-10"
         />
         <CTextArea
           label="Knowledge"
@@ -67,14 +67,14 @@ const CreateAgentPage = () => {
           value={knowledge}
           onChange={(e) => setKnowledge(e.target.value)}
           height="h-52"
-          className="bg-black border border-secondary"
+          className=" border border-secondary"
         />
         <CTextArea
           label="Prompt"
           placeholder="Enter your prompt"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          className="bg-black border border-secondary"
+          className=" border border-secondary"
         />
 
         <CButton

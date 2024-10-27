@@ -6,8 +6,11 @@ import CButton from "../../utils/CButton/CButton";
 import CInput from "../../utils/CInput/CInput";
 import { useLoginMutation } from "../../redux/features/auth/authApiSlice";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [hide, setHide] = useState(true);
 
@@ -68,6 +71,7 @@ const Login = () => {
 
       if (res) {
         localStorage.setItem("ODL-LLM-USER", JSON.stringify(res?.user));
+        dispatch(setUser(res?.user));
         Swal.fire("Successfully Logged In!", "Success!", "success");
         e.target.reset();
         navigate("/");

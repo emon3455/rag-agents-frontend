@@ -5,11 +5,13 @@ const Main = () => {
   const arr = ["/login", "/register"];
   const location = useLocation();
   const { pathname } = location;
+  console.log(pathname);
+  
 
   return (
     <main className="bg-white text-black relative">
       {arr.includes(pathname) ? null : <Navbar />}
-      <div className="mt-16">
+      <div className={`${arr.includes(pathname) ? "mt-0" : "mt-16"}`}>
         <Outlet />
       </div>
     </main>
