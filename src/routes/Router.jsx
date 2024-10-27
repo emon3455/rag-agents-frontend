@@ -9,6 +9,7 @@ import AgentPage from "../pages/agent/AgentPage";
 import ConversationPage from "../pages/conversation/ConversationPage";
 import CreateAgentPage from "../pages/agent/CreateAgentPage";
 import PrivateRoute from "./PrivateRoutes";
+import PublicRoute from "./PublicRoutes";
 
 const router = createBrowserRouter([
   {
@@ -22,15 +23,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        ),
       },
       {
         path: "/register",
-        element: <Register />,
+        element: (
+          <PrivateRoute>
+            <Register />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/agent",
-        element: <PrivateRoute><AgentPage /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AgentPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/create-agent",
@@ -38,7 +51,11 @@ const router = createBrowserRouter([
       },
       {
         path: `/conversation/:id`,
-        element: <PrivateRoute><ConversationPage /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <ConversationPage />
+          </PrivateRoute>
+        ),
       },
     ],
   },
