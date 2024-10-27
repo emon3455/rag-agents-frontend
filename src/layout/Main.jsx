@@ -5,9 +5,7 @@ const Main = () => {
   const arr = ["/login", "/register"];
   const location = useLocation();
   const { pathname } = location;
-  console.log(pathname);
   
-
   return (
     <main className="bg-white text-black relative">
       {arr.includes(pathname) ? null : <Navbar />}

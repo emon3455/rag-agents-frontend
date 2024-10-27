@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaHome } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CButton from "../../utils/CButton/CButton";
 import CInput from "../../utils/CInput/CInput";
 import { useLoginMutation } from "../../redux/features/auth/authApiSlice";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/features/auth/authSlice";
 
 const Login = () => {
 

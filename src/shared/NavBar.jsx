@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../redux/features/auth/authSlice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Access user from Redux store
   const user = useSelector((state) => state.userSlice.user);
-  console.log(user);
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    localStorage.removeItem("ODL-LLM-USER");
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-black fixed top-0 w-full z-20">
@@ -36,12 +42,22 @@ const Navbar = () => {
                   Agent
                 </Link>
               )}
-              <Link
-                to="/login"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400"
-              >
-                Login
-              </Link>
+              {/* Conditionally render Login or Logout */}
+              {user?._id ? (
+                <button
+                  onClick={logoutHandler}
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-orange-500 transition-all duration-400"
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -106,12 +122,21 @@ const Navbar = () => {
                 Agent
               </Link>
             )}
-            <Link
-              to="/login"
-              className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
-            >
-              Login
-            </Link>
+            {user?._id ? (
+              <button
+                onClick={logoutHandler}
+                className="text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       )}
