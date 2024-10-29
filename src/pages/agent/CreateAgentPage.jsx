@@ -2,7 +2,7 @@ import { useState } from "react";
 import CInput from "../../utils/CInput/CInput";
 import CTextArea from "../../utils/CTextArea/CTextArea";
 import CButton from "../../utils/CButton/CButton";
-import { useCreateAgentMutation } from "../../redux/features/agent/agentApiSlice"; // Import mutation hook
+import { useCreateAgentMutation } from "../../redux/features/agent/agentApiSlice";
 
 const CreateAgentPage = () => {
   // State for form fields
@@ -21,6 +21,19 @@ const CreateAgentPage = () => {
     setError(null);
     setSuccess(null);
 
+    if(agentName === ""){
+      setError("Agent Name is Required");
+      return
+    }
+    if(knowledge === ""){
+      setError("Knowledge is Required");
+      return
+    }
+    if(prompt === ""){
+      setError("Prompt is Required");
+      return
+    }
+    
     // Create agent object
     const newAgent = {
       agent_name: agentName,
