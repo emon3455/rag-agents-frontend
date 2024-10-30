@@ -67,7 +67,7 @@ const ConversationSidebar = () => {
               </Link>
             )}
           </div>
-          <div className="p-6">
+          <div className="p-6 py-5">
             {user?._id ? (
               <button
                 onClick={() => {
