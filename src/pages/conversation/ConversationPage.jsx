@@ -39,7 +39,7 @@ const ConversationPage = () => {
   }, [messages]);
 
   return (
-    <div className="lg:ml-64">
+    <div className="md:ml-64">
       <ConversationSidebar />
       <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5  ">
         <div className="flex-1 overflow-y-auto mb-4 h-full">
