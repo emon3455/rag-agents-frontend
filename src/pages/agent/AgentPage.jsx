@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { BsPlus } from "react-icons/bs";
+import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
 import CButton from "../../utils/CButton/CButton";
 import {
   useGetAllAgentQuery,
@@ -90,6 +90,10 @@ const AgentPage = () => {
                   key={agent._id}
                   className="group relative border  rounded-md shadow-md overflow-hidden"
                 >
+                  <BsThreeDotsVertical
+                    className="absolute top-2 right-1 text-white z-50"
+                    size={20}
+                  />
                   <img
                     src={getRandomImage()}
                     alt="Agent"
