@@ -74,7 +74,7 @@ const ConversationSidebar = () => {
                   logoutHandler();
                   setIsSidebarOpen(false);
                 }}
-                className="w-full  text-center text-white px-6  py-2 rounded-md text-lg font-medium bg-gray-950 transition-all duration-400 "
+                className="w-full  text-center text-white px-6  py-2 rounded-md text-lg font-medium bg-orange-500 transition-all duration-400 "
               >
                 Logout
               </button>
