@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/features/auth/authSlice";
+import { AiOutlineMenuUnfold } from "react-icons/ai";
 
-const   ConversationSidebar = () => {
+const ConversationSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSelector((state) => state.userSlice.user);
   const dispatch = useDispatch();
@@ -20,16 +21,21 @@ const   ConversationSidebar = () => {
       {/* Toggle button for mobile view */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-30 text-white bg-black p-2 rounded-md"
+        className="md:hidden fixed top-4 left-4 z-30 "
       >
-        {isSidebarOpen ? "Close" : "Menu"}
+        {!isSidebarOpen && (
+          <AiOutlineMenuUnfold
+            className="bg-black text-white rounded p-1"
+            size={22}
+          />
+        )}
       </button>
 
       {/* Sidebar overlay */}
       <div
         className={`fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity duration-300 md:hidden ${
           isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`} 
+        }`}
         onClick={() => setIsSidebarOpen(false)}
       />
 
