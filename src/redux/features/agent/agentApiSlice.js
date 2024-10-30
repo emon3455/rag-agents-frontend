@@ -16,6 +16,14 @@ export const agentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // Add the query to get a single agent by ID
+    getAgentById: builder.query({
+      query: (id) => ({
+        url: `/api/agents/${id}`, // Adjust the URL based on your API design
+        method: "GET",
+      }),
+    }),
+
     createAgent: builder.mutation({
       query: (data) => ({
         url: "/api/agents",
@@ -40,13 +48,24 @@ export const agentApiSlice = apiSlice.injectEndpoints({
         body: { agentId },
       }),
     }),
+
+    updateAgent: builder.mutation({
+      query: ({ agentId, email, agent_name, knowledge, prompt }) => ({
+        url: `/api/agents`,
+        method: "PUT",
+        body: { agentId, email, agent_name, knowledge, prompt },
+      }),
+    }),
   }),
 });
 
+// Export hooks for usage in functional components
 export const {
   useAskQuestionMutation,
   useCreateAgentMutation,
   useGetAllAgentQuery,
   useGetUserAllAgentQuery,
-  useDeleteAgentMutation, // Export the deleteAgent hook
+  useDeleteAgentMutation,
+  useUpdateAgentMutation,
+  useGetAgentByIdQuery, // Export the getAgentById hook
 } = agentApiSlice;

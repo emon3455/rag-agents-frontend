@@ -163,7 +163,9 @@ const AgentPage = () => {
                         <ul className="space-y-4">
                           <li
                             className="hover:bg-orange-500 px-2 rounded cursor-pointer"
-                            onClick={() => navigate("/update-agent")}
+                            onClick={() =>
+                              navigate(`/update-agent/${agent._id}`)
+                            }
                           >
                             Update Agent
                           </li>
