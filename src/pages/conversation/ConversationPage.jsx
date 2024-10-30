@@ -47,7 +47,7 @@ const ConversationPage = () => {
   return (
     <div className="md:ml-64">
       <ConversationSidebar />
-      <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5  ">
+      <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5 bg-gray-100  ">
         <div className="flex-1 overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
             <div
@@ -66,7 +66,7 @@ const ConversationPage = () => {
               <div
                 className={`rounded-lg px-4 py-2  ${
                   message.sender === "user"
-                    ? "bg-gray-100 text-gray-700"
+                    ? "bg-gray-200 text-gray-700"
                     : "bg-transparent"
                 } w-1/3`}
               >
