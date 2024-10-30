@@ -1,15 +1,56 @@
 import { useNavigate } from "react-router-dom";
-import { BsPlus } from "react-icons/bs";
+import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
 import CButton from "../../utils/CButton/CButton";
 import {
   useGetAllAgentQuery,
   useCreateAgentMutation,
+  useDeleteAgentMutation,
 } from "../../redux/features/agent/agentApiSlice";
+
+import { useEffect, useRef, useState } from "react";
+import {
+  errorAlert,
+  successAlert,
+  warningAlert,
+} from "../../utils/allertFunction";
 
 const AgentPage = () => {
   const navigate = useNavigate();
-  const { data: agents, isLoading, isError, error } = useGetAllAgentQuery();
+  const {
+    data: agents,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetAllAgentQuery();
+  const [showDropdown, setShowDropdown] = useState("");
+  const dropdownRef = useRef(null);
   const [createAgent] = useCreateAgentMutation();
+
+  const [deleteAgent] = useDeleteAgentMutation();
+
+  const handleDelete = async (agentId) => {
+    // Show confirmation alert
+    const result = await warningAlert({
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    // Proceed if the user confirmed
+    if (result.isConfirmed) {
+      try {
+        await deleteAgent(agentId).unwrap();
+        refetch();
+        successAlert({ text: "Agent deleted successfully" });
+      } catch (error) {
+        console.error("Failed to delete agent:", error);
+        errorAlert({ text: "Failed to delete agent" });
+      }
+    }
+  };
+
   const imgUrls = [
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
   ];
@@ -31,6 +72,19 @@ const AgentPage = () => {
   const handleStartConversation = (agentId) => {
     navigate(`/conversation/${agentId}`);
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="p-4">
@@ -90,6 +144,41 @@ const AgentPage = () => {
                   key={agent._id}
                   className="group relative border  rounded-md shadow-md overflow-hidden"
                 >
+                  <div className="absolute top-2 right-1 text-white z-50">
+                    <BsThreeDotsVertical
+                      size={20}
+                      className="ml-auto relative cursor-pointer hover:text-orange-500"
+                      onClick={() =>
+                        showDropdown === agent._id
+                          ? setShowDropdown("")
+                          : setShowDropdown(agent._id)
+                      }
+                    />
+
+                    {showDropdown === agent._id && (
+                      <div
+                        className="bg-black p-4 right-4 relative rounded-md"
+                        ref={dropdownRef}
+                      >
+                        <ul className="space-y-4">
+                          <li
+                            className="hover:bg-orange-500 px-2 rounded cursor-pointer"
+                            onClick={() =>
+                              navigate(`/update-agent/${agent._id}`)
+                            }
+                          >
+                            Update Agent
+                          </li>
+                          <li
+                            className="hover:bg-red-700 px-2 rounded cursor-pointer"
+                            onClick={() => handleDelete(agent._id)}
+                          >
+                            Delete Agent
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                   <img
                     src={getRandomImage()}
                     alt="Agent"

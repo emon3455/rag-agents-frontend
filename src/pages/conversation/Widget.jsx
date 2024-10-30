@@ -1,26 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAskQuestionMutation } from "../../redux/features/agent/agentApiSlice";
 import { FiSend } from "react-icons/fi";
-import ConversationSidebar from "./ConversationSidebar";
+import {
+  useAskQuestionMutation,
+  useGetAgentByIdQuery,
+} from "../../redux/features/agent/agentApiSlice";
+import { useParams } from "react-router-dom";
 
-const ConversationPage = () => {
+const Widget = () => {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const messageEndRef = useRef(null);
 
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
+  const { data: agentData, isLoading: isFetching } = useGetAgentByIdQuery(id);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage = {
-      agentId: id,
       question: input,
+      // Include any additional properties you need for the message here
     };
 
-    setMessages([...messages, { text: input, sender: "user" }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: input, sender: "user" },
+    ]);
     setInput("");
 
     try {
@@ -35,7 +41,7 @@ const ConversationPage = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && e.shiftKey === false) {
+    if (e.key === "Enter" && !e.shiftKey) {
       sendMessage();
     }
   };
@@ -44,17 +50,21 @@ const ConversationPage = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  if (isFetching) {
+    return <p>Loading Agent Data...</p>;
+  }
+
   return (
-    <div className="md:ml-64">
-      <ConversationSidebar />
-      <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5 bg-gray-100  ">
+    <div className="w-full mx-auto h-screen flex flex-col justify-between p-5 bg-gray-100">
+      <h1 className="bg-black  p-2 text-white">{agentData?.agent_name}</h1>
+      <div>
         <div className="flex-1 overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${
                 message.sender === "user" ? "justify-end" : "justify-start"
-              } mb-2 `}
+              } mb-2`}
             >
               {message.sender === "agent" && (
                 <img
@@ -64,11 +74,11 @@ const ConversationPage = () => {
                 />
               )}
               <div
-                className={`rounded-lg px-4 py-2  ${
+                className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
                     ? "bg-gray-200 text-gray-700 w-1/3"
                     : "bg-transparent w-1/2"
-                } `}
+                }`}
               >
                 {message.text}
               </div>
@@ -110,9 +120,9 @@ const ConversationPage = () => {
             <FiSend size={24} />
           </button>
         </div>
-      </div>
+      </div>{" "}
     </div>
   );
 };
 
-export default ConversationPage;
+export default Widget;
