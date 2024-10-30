@@ -10,6 +10,7 @@ import ConversationPage from "../pages/conversation/ConversationPage";
 import CreateAgentPage from "../pages/agent/CreateAgentPage";
 import PrivateRoute from "./PrivateRoutes";
 import PublicRoute from "./PublicRoutes";
+import UpdateAgentPage from "../pages/agent/UpdateAgentPage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/create-agent",
         element: <CreateAgentPage />,
+      },
+      {
+        path: "/update-agent",
+        element: <UpdateAgentPage />,
       },
       {
         path: `/conversation/:id`,
