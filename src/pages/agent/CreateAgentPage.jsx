@@ -3,6 +3,9 @@ import CInput from "../../utils/CInput/CInput";
 import CTextArea from "../../utils/CTextArea/CTextArea";
 import CButton from "../../utils/CButton/CButton";
 import { useCreateAgentMutation } from "../../redux/features/agent/agentApiSlice";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { errorAlert, successAlert } from "../../utils/allertFunction";
 
 const CreateAgentPage = () => {
   // State for form fields
@@ -14,6 +17,8 @@ const CreateAgentPage = () => {
 
   // Use mutation hook from Redux
   const [createAgent, { isLoading }] = useCreateAgentMutation();
+
+  const navigate = useNavigate();
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -33,23 +38,28 @@ const CreateAgentPage = () => {
       setError("Prompt is Required");
       return
     }
+
+    const user  = JSON.parse(localStorage.getItem('ODL-LLM-USER'))
     
     // Create agent object
     const newAgent = {
       agent_name: agentName,
       knowledge,
       prompt,
+      email: user?.email,
+      userId: user?._id
     };
+    console.log(newAgent);
 
     try {
-      // Send the agent creation request using the createAgent mutation
-      await createAgent(newAgent).unwrap(); // unwrap to handle async behavior
-      setSuccess("Agent created successfully!");
+      const resp = await createAgent(newAgent).unwrap();
       setAgentName("");
       setKnowledge("");
       setPrompt("");
+      successAlert({title:"Success",text:"Agent Created Successfully!"});
+      navigate("/agent");
     } catch (err) {
-      setError("Failed to create agent. Please try again.", err);
+      errorAlert({title:"Failed",text:"Failed to create agent. Please try again."});
     }
   };
 

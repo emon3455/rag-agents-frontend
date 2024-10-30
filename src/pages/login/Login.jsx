@@ -8,6 +8,7 @@ import { useLoginMutation } from "../../redux/features/auth/authApiSlice";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/features/auth/authSlice";
+import { successAlert } from "../../utils/allertFunction";
 
 const Login = () => {
 
@@ -73,13 +74,14 @@ const Login = () => {
       if (res) {
         localStorage.setItem("ODL-LLM-USER", JSON.stringify(res?.user));
         dispatch(setUser(res?.user));
-        Swal.fire("Successfully Logged In!", "Success!", "success");
+        successAlert("Successfully Logged In!");
         e.target.reset();
+        setIsLoading(false);
         navigate("/agent");
       }
     } catch (err) {
       setIsLoading(false);
-      console.log(err);
+      errorAlert("Failed to loging in. Please try again.");
     }
   };
 
