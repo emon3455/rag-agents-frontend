@@ -48,42 +48,46 @@ const ConversationSidebar = () => {
         <h1 className="text-white text-2xl font-bold px-6 py-5">
           <span className="text-orange-500">ODL</span>-AI
         </h1>
-        <nav className="flex flex-col mt-8 space-y-4 px-6">
-          <Link
-            to="/"
-            className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            Home
-          </Link>
-          {user?._id && (
+        <nav className="flex flex-col justify-between h-full">
+          <div className="flex flex-col mt-8 space-y-4 px-6">
             <Link
-              to="/agent"
+              to="/"
               className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
               onClick={() => setIsSidebarOpen(false)}
             >
-              Agent
+              Home
             </Link>
-          )}
-          {user?._id ? (
-            <button
-              onClick={() => {
-                logoutHandler();
-                setIsSidebarOpen(false);
-              }}
-              className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400 text-left"
-            >
-              Logout
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              Login
-            </Link>
-          )}
+            {user?._id && (
+              <Link
+                to="/agent"
+                className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                Agent
+              </Link>
+            )}
+          </div>
+          <div className="p-6">
+            {user?._id ? (
+              <button
+                onClick={() => {
+                  logoutHandler();
+                  setIsSidebarOpen(false);
+                }}
+                className="w-full  text-center text-white px-6  py-2 rounded-md text-lg font-medium bg-gray-950 transition-all duration-400 "
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                Login
+              </Link>
+            )}
+          </div>
         </nav>
       </div>
     </div>
