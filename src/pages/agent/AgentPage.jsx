@@ -97,9 +97,9 @@ const AgentPage = () => {
                       size={20}
                       className="ml-auto relative cursor-pointer hover:text-orange-500"
                       onClick={() =>
-                        showDropdown === ""
-                          ? setShowDropdown(agent._id)
-                          : setShowDropdown("")
+                        showDropdown === agent._id
+                          ? setShowDropdown("")
+                          : setShowDropdown(agent._id)
                       }
                     />
 
