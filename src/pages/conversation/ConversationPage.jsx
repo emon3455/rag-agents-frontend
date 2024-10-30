@@ -66,9 +66,9 @@ const ConversationPage = () => {
               <div
                 className={`rounded-lg px-4 py-2  ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700"
-                    : "bg-transparent"
-                } w-1/3`}
+                    ? "bg-gray-200 text-gray-700 w-1/3"
+                    : "bg-transparent w-1/2"
+                } `}
               >
                 {message.text}
               </div>
