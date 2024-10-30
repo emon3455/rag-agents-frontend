@@ -34,6 +34,12 @@ const ConversationPage = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && e.shiftKey === false) {
+      sendMessage();
+    }
+  };
+
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -88,6 +94,7 @@ const ConversationPage = () => {
             rows={1}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Ask a question..."
             className="resize-none w-full border rounded-lg p-2 focus:outline-none overflow-hidden"
             style={{
