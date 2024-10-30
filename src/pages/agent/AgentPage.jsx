@@ -5,13 +5,15 @@ import {
   useGetAllAgentQuery,
   useCreateAgentMutation,
 } from "../../redux/features/agent/agentApiSlice";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const AgentPage = () => {
   const navigate = useNavigate();
   const { data: agents, isLoading, isError, error } = useGetAllAgentQuery();
   const [showDropdown, setShowDropdown] = useState("");
+  const dropdownRef = useRef(null);
   const [createAgent] = useCreateAgentMutation();
+
   const imgUrls = [
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
   ];
@@ -33,6 +35,19 @@ const AgentPage = () => {
   const handleStartConversation = (agentId) => {
     navigate(`/conversation/${agentId}`);
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="p-4">
@@ -104,7 +119,10 @@ const AgentPage = () => {
                     />
 
                     {showDropdown === agent._id && (
-                      <div className="bg-black p-4 right-4 relative rounded-md">
+                      <div
+                        className="bg-black p-4 right-4 relative rounded-md"
+                        ref={dropdownRef}
+                      >
                         <ul className="space-y-4">
                           <li className="hover:bg-orange-500 px-2 rounded cursor-pointer">
                             Update Agent
