@@ -5,10 +5,12 @@ import {
   useGetAllAgentQuery,
   useCreateAgentMutation,
 } from "../../redux/features/agent/agentApiSlice";
+import { useState } from "react";
 
 const AgentPage = () => {
   const navigate = useNavigate();
   const { data: agents, isLoading, isError, error } = useGetAllAgentQuery();
+  const [showDropdown, setShowDropdown] = useState("");
   const [createAgent] = useCreateAgentMutation();
   const imgUrls = [
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
@@ -90,10 +92,30 @@ const AgentPage = () => {
                   key={agent._id}
                   className="group relative border  rounded-md shadow-md overflow-hidden"
                 >
-                  <BsThreeDotsVertical
-                    className="absolute top-2 right-1 text-white z-50"
-                    size={20}
-                  />
+                  <div className="absolute top-2 right-1 text-white z-50">
+                    <BsThreeDotsVertical
+                      size={20}
+                      className="ml-auto relative cursor-pointer hover:text-orange-500"
+                      onClick={() =>
+                        showDropdown === ""
+                          ? setShowDropdown(agent._id)
+                          : setShowDropdown("")
+                      }
+                    />
+
+                    {showDropdown === agent._id && (
+                      <div className="bg-black p-4 right-4 relative rounded-md">
+                        <ul className="space-y-4">
+                          <li className="hover:bg-orange-500 px-2 rounded cursor-pointer">
+                            Update Agent
+                          </li>
+                          <li className="hover:bg-red-700 px-2 rounded cursor-pointer">
+                            Delete Agent
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                   <img
                     src={getRandomImage()}
                     alt="Agent"
