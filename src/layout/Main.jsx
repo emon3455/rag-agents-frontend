@@ -8,7 +8,9 @@ const Main = () => {
 
   // Check if the current path should hide the Navbar
   const hideNavbar =
-    excludedPaths.includes(pathname) || pathname.startsWith("/conversation");
+    excludedPaths.includes(pathname) ||
+    pathname.startsWith("/conversation") ||
+    pathname.startsWith("/agent-widget");
 
   return (
     <main className="bg-white text-black relative">
