@@ -4,15 +4,52 @@ import CButton from "../../utils/CButton/CButton";
 import {
   useGetAllAgentQuery,
   useCreateAgentMutation,
+  useDeleteAgentMutation,
 } from "../../redux/features/agent/agentApiSlice";
+
 import { useEffect, useRef, useState } from "react";
+import {
+  errorAlert,
+  successAlert,
+  warningAlert,
+} from "../../utils/allertFunction";
 
 const AgentPage = () => {
   const navigate = useNavigate();
-  const { data: agents, isLoading, isError, error } = useGetAllAgentQuery();
+  const {
+    data: agents,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetAllAgentQuery();
   const [showDropdown, setShowDropdown] = useState("");
   const dropdownRef = useRef(null);
   const [createAgent] = useCreateAgentMutation();
+
+  const [deleteAgent] = useDeleteAgentMutation();
+
+  const handleDelete = async (agentId) => {
+    // Show confirmation alert
+    const result = await warningAlert({
+      title: "Are you sure?",
+      text: "This action cannot be undone!",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    // Proceed if the user confirmed
+    if (result.isConfirmed) {
+      try {
+        await deleteAgent(agentId).unwrap();
+        refetch();
+        successAlert({ text: "Agent deleted successfully" });
+      } catch (error) {
+        console.error("Failed to delete agent:", error);
+        errorAlert({ text: "Failed to delete agent" });
+      }
+    }
+  };
 
   const imgUrls = [
     "https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D",
@@ -124,10 +161,16 @@ const AgentPage = () => {
                         ref={dropdownRef}
                       >
                         <ul className="space-y-4">
-                          <li className="hover:bg-orange-500 px-2 rounded cursor-pointer">
+                          <li
+                            className="hover:bg-orange-500 px-2 rounded cursor-pointer"
+                            onClick={() => navigate("/update-agent")}
+                          >
                             Update Agent
                           </li>
-                          <li className="hover:bg-red-700 px-2 rounded cursor-pointer">
+                          <li
+                            className="hover:bg-red-700 px-2 rounded cursor-pointer"
+                            onClick={() => handleDelete(agent._id)}
+                          >
                             Delete Agent
                           </li>
                         </ul>
