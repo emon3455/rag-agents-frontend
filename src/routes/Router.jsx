@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoutes";
 import PublicRoute from "./PublicRoutes";
 import UpdateAgentPage from "../pages/agent/UpdateAgentPage";
 import Widget from "../pages/conversation/Widget";
+import ShareAgent from "../pages/conversation/ShareAgent";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/agent-widget/:id",
         element: <Widget />,
+      },
+      {
+        path: "/share-agent/:id",
+        element: <ShareAgent />,
       },
       {
         path: `/conversation/:id`,
