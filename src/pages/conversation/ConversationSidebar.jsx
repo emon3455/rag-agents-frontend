@@ -3,10 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/features/auth/authSlice";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
+import { FaCircleChevronDown } from "react-icons/fa6";
 
-const ConversationSidebar = () => {
+const ConversationSidebar = ({ widgetId }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSelector((state) => state.userSlice.user);
+  const [showDropdown, setShowDropdown] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -65,6 +68,33 @@ const ConversationSidebar = () => {
               >
                 Agent
               </Link>
+            )}
+            {user?._id && (
+              <ul className="relative">
+                <li
+                  className="flex items-center   gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  Share
+                  <FaCircleChevronDown
+                    className={`w-5 transition  ${
+                      showDropdown ? "-rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </li>
+
+                <ul
+                  className={`overflow-hidden transition-all duration-300 ${
+                    showDropdown ? "max-h-40" : "max-h-0"
+                  } pl-6 leading-10 font-medium`}
+                >
+                  <li>
+                    <Link to={`/agent-widget/${widgetId}`}>Widget</Link>
+                  </li>
+                  <li>API</li>
+                  <li>Agent Page</li>
+                </ul>
+              </ul>
             )}
           </div>
           <div className="p-6 py-5">

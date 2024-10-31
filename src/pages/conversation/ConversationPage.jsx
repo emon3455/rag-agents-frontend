@@ -46,7 +46,7 @@ const ConversationPage = () => {
 
   return (
     <div className="md:ml-64">
-      <ConversationSidebar />
+      <ConversationSidebar widgetId={id} />
       <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5 bg-gray-100  ">
         <div className="flex-1 overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
