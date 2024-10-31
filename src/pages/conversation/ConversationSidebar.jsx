@@ -227,10 +227,12 @@ const ConversationSidebar = ({ widgetId }) => {
             </pre>
             <div className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden">
               <code className="text-white whitespace-normal">
-                {`{
-  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID
-  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
-}`}
+                {`
+                  {
+                  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
+                  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
+                  }
+              `}
               </code>
             </div>
             <CButton
