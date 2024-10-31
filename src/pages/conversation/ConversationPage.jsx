@@ -8,7 +8,7 @@ const ConversationPage = () => {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [currentMessage, setCurrentMessage] = useState(""); // Track the current typing message
+  const [currentMessage, setCurrentMessage] = useState("");
   const messageEndRef = useRef(null);
 
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
@@ -49,6 +49,7 @@ const ConversationPage = () => {
           ...prevMessages,
           { text: fullText, sender: "agent" },
         ]);
+        setCurrentMessage(""); // Clear current message after adding to messages
       }
     }, 50); // Faster interval speed for word-by-word display
   };
@@ -94,7 +95,7 @@ const ConversationPage = () => {
               </div>
             </div>
           ))}
-          {isLoading || currentMessage ? (
+          {(isLoading || currentMessage) && (
             <div className="flex justify-start mb-2">
               <img
                 src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
@@ -102,10 +103,10 @@ const ConversationPage = () => {
                 className="w-8 h-8 rounded-full mr-2"
               />
               <div className="bg-blue-100 p-2 rounded-lg">
-                <span>{currentMessage || "Typing..."}</span>
+                <span>{currentMessage || "Thinking..."}</span>
               </div>
             </div>
-          ) : null}
+          )}
           <div ref={messageEndRef} /> {/* Reference for auto-scroll */}
         </div>
         <div className="flex items-center relative">
