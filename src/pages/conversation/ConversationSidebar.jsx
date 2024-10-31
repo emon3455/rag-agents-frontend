@@ -19,8 +19,8 @@ const ConversationSidebar = ({ widgetId }) => {
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}`;
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(scriptCode);
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
     successAlert({ title: "Script copied to clipboard!" });
   };
 
@@ -86,7 +86,7 @@ const ConversationSidebar = ({ widgetId }) => {
             {user?._id && (
               <ul className="relative">
                 <li
-                  className="flex items-center   gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                  className="flex items-center justify-between  gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
                   onClick={() => setShowDropdown(!showDropdown)}
                 >
                   Share
@@ -102,12 +102,20 @@ const ConversationSidebar = ({ widgetId }) => {
                     showDropdown ? "max-h-40" : "max-h-0"
                   } pl-6 leading-10 font-medium`}
                 >
-                  <li className="" onClick={() => setShowWidgetModal(true)}>
+                  <li
+                    className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition"
+                    onClick={() => setShowWidgetModal(true)}
+                  >
                     {/* <Link to={`/agent-widget/${widgetId}`}>Widget</Link> */}
                     Widget
                   </li>
-                  <li>API</li>
-                  <li onClick={() => setShowAgentPageModal(true)}>
+                  <li className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition">
+                    API
+                  </li>
+                  <li
+                    className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition"
+                    onClick={() => setShowAgentPageModal(true)}
+                  >
                     Agent Page
                   </li>
                 </ul>
@@ -145,10 +153,10 @@ const ConversationSidebar = ({ widgetId }) => {
       >
         <div className="h-60">
           <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
-            <code>{scriptCode}</code>
+            <code className="text-white">{scriptCode}</code>
           </pre>
           <CButton
-            onClick={handleCopy}
+            onClick={() => handleCopy(scriptCode)}
             variant="solid"
             className="ml-auto text-white"
           >
@@ -164,10 +172,10 @@ const ConversationSidebar = ({ widgetId }) => {
       >
         <div className="h-60">
           <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
-            <code>{agentPageCode}</code>
+            <code className="text-white">{agentPageCode}</code>
           </pre>
           <CButton
-            onClick={handleCopy}
+            onClick={() => handleCopy(agentPageCode)}
             variant="solid"
             className="ml-auto text-white"
           >
