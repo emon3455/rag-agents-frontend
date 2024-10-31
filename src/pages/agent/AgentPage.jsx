@@ -13,6 +13,7 @@ import {
   successAlert,
   warningAlert,
 } from "../../utils/allertFunction";
+import Loading from "../../utils/CLoading/Loading";
 
 const AgentPage = () => {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ const AgentPage = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6 max-w-screen-xl mx-auto">
-        <h1 className="text-2xl font-semibold">My Agents</h1>
+        <h1 className="text-xl font-bold">User: {user.name}</h1>
         <button
           onClick={handleCreateAgent}
           className="flex items-center gap-2 bg-orange-500 text-white rounded-md py-2 px-4"
@@ -101,7 +102,7 @@ const AgentPage = () => {
         </button>
       </div>
 
-      {isLoading && <p>Loading agents...</p>}
+      {isLoading && <Loading/>}
       {isError && (
         <p className="text-red-500">
           {error?.message || "Error fetching agents"}
@@ -189,11 +190,11 @@ const AgentPage = () => {
                   />
                   <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-30 hover:bg-opacity-60 text-white  opacity-100 transition duration-300 p-4 rounded-md">
                     <h2 className="font-semibold text-lg mb-2">
-                      {agent.agent_name}
+                      {agent?.agent_name}
                     </h2>
                     <CButton
                       variant={"outline"}
-                      onClick={() => handleStartConversation(agent._id)}
+                      onClick={() => handleStartConversation(agent?._id)}
                     >
                       Start Conversation
                     </CButton>
