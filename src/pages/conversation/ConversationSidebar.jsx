@@ -19,8 +19,8 @@ const ConversationSidebar = ({ widgetId }) => {
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}`;
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(scriptCode);
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
     successAlert({ title: "Script copied to clipboard!" });
   };
 
@@ -145,10 +145,10 @@ const ConversationSidebar = ({ widgetId }) => {
       >
         <div className="h-60">
           <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
-            <code>{scriptCode}</code>
+            <code className="text-white">{scriptCode}</code>
           </pre>
           <CButton
-            onClick={handleCopy}
+            onClick={() => handleCopy(scriptCode)}
             variant="solid"
             className="ml-auto text-white"
           >
@@ -164,10 +164,10 @@ const ConversationSidebar = ({ widgetId }) => {
       >
         <div className="h-60">
           <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
-            <code>{agentPageCode}</code>
+            <code className="text-white">{agentPageCode}</code>
           </pre>
           <CButton
-            onClick={handleCopy}
+            onClick={() => handleCopy(agentPageCode)}
             variant="solid"
             className="ml-auto text-white"
           >
