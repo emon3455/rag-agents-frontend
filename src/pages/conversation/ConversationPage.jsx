@@ -20,7 +20,7 @@ const ConversationPage = () => {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
+    console.log("Regenerate triggered");
     const userMessage = {
       agentId: id,
       question: input,
@@ -92,8 +92,8 @@ const ConversationPage = () => {
     ) {
       const lastUserMessage = messages[messages.length - 1].text;
       setInput(lastUserMessage); // Set input to last user message
-      sendMessage(); // Regenerate response
     }
+    sendMessage(); // Regenerate response
   };
 
   useEffect(() => {
@@ -119,46 +119,48 @@ const ConversationPage = () => {
                   className="w-8 h-8 rounded-full mr-2"
                 />
               )}
-              <div
-                className={`rounded-lg px-4 py-2 ${
-                  message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 max-w-[50%]" // User message with max-width of 50%
-                    : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
-                }`}
-              >
-                {message.sender === "agent" ? (
-                  <ReactMarkdown>{message.text}</ReactMarkdown> // Render markdown for agent messages
-                ) : (
-                  <span>{message.text}</span>
+              <div>
+                <div
+                  className={`rounded-lg px-4 py-2 ${
+                    message.sender === "user"
+                      ? "bg-gray-200 text-gray-700 max-w-[50%]" // User message with max-width of 50%
+                      : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
+                  }`}
+                >
+                  {message.sender === "agent" ? (
+                    <ReactMarkdown>{message.text}</ReactMarkdown> // Render markdown for agent messages
+                  ) : (
+                    <span>{message.text}</span>
+                  )}
+                </div>
+                {message.sender === "agent" && ( // Only show buttons for agent messages
+                  <div className="flex space-x-4 my-2 justify-end max-w-[50%]">
+                    <button
+                      onClick={() => handleCopy(message.text)}
+                      aria-label="Copy message"
+                      className="text-gray-600 hover:text-orange-500"
+                    >
+                      <FaClipboard />
+                    </button>
+                    <button
+                      onClick={() => handleReadOutLoud(message.text)}
+                      aria-label="Read out loud"
+                      className={`text-gray-600 hover:text-orange-500 ${
+                        reading ? "text-red-500" : ""
+                      }`}
+                    >
+                      <FaVolumeUp />
+                    </button>
+                    <button
+                      onClick={handleRegenerate}
+                      aria-label="Regenerate response"
+                      className="text-gray-600 hover:text-orange-500"
+                    >
+                      <GrPowerCycle />
+                    </button>
+                  </div>
                 )}
               </div>
-              {message.sender === "agent" && ( // Only show buttons for agent messages
-                <div className="flex space-x-2 ml-2">
-                  <button
-                    onClick={() => handleCopy(message.text)}
-                    aria-label="Copy message"
-                    className="text-gray-600 hover:text-orange-500"
-                  >
-                    <FaClipboard />
-                  </button>
-                  <button
-                    onClick={() => handleReadOutLoud(message.text)}
-                    aria-label="Read out loud"
-                    className={`text-gray-600 hover:text-orange-500 ${
-                      reading ? "text-red-500" : ""
-                    }`}
-                  >
-                    <FaVolumeUp />
-                  </button>
-                  <button
-                    onClick={handleRegenerate}
-                    aria-label="Regenerate response"
-                    className="text-gray-600 hover:text-orange-500"
-                  >
-                    <GrPowerCycle />
-                  </button>
-                </div>
-              )}
             </div>
           ))}
           {(isLoading || currentMessage) && (
