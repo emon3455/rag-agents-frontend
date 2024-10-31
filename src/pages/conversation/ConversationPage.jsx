@@ -35,7 +35,8 @@ const ConversationPage = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && e.shiftKey === false) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevents cursor from moving to a new line
       sendMessage();
     }
   };
@@ -47,14 +48,14 @@ const ConversationPage = () => {
   return (
     <div className="md:ml-64">
       <ConversationSidebar widgetId={id} />
-      <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5 bg-gray-100  ">
+      <div className="w-full mx-auto h-screen flex flex-col justify-between p-5 bg-gray-100">
         <div className="flex-1 overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${
                 message.sender === "user" ? "justify-end" : "justify-start"
-              } mb-2 `}
+              } mb-2`}
             >
               {message.sender === "agent" && (
                 <img
@@ -64,11 +65,11 @@ const ConversationPage = () => {
                 />
               )}
               <div
-                className={`rounded-lg px-4 py-2  ${
+                className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
                     ? "bg-gray-200 text-gray-700 w-1/3"
-                    : "bg-transparent w-1/2"
-                } `}
+                    : "bg-blue-100 text-gray-900 w-1/2"
+                }`}
               >
                 {message.text}
               </div>
@@ -81,13 +82,13 @@ const ConversationPage = () => {
                 alt="Agent"
                 className="w-8 h-8 rounded-full mr-2"
               />
-              <div className="flex items-center">
-                <p className="animate-pulse">Thinking...</p>
+              <div className="bg-blue-100 p-2 rounded-lg flex items-center animate-pulse">
+                <span>Typing</span>
+                <span className="dot-typing ml-1 text-lg">...</span>
               </div>
             </div>
           )}
-          <div ref={messageEndRef} />{" "}
-          {/* This is the reference for scrolling */}
+          <div ref={messageEndRef} /> {/* Reference for auto-scroll */}
         </div>
         <div className="flex items-center relative">
           <textarea
@@ -96,7 +97,7 @@ const ConversationPage = () => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask a question..."
-            className="resize-none w-full border rounded-lg p-2 focus:outline-none overflow-hidden"
+            className="w-full border rounded-lg p-2 focus:outline-none resize-none"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
