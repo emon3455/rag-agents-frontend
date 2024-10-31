@@ -131,8 +131,8 @@ const ConversationPage = () => {
                 <div
                   className={`rounded-lg px-4 py-2 ${
                     message.sender === "user"
-                      ? "bg-gray-200 text-gray-700 w-full max-w-[50%]"
-                      : "bg-blue-100 text-gray-900  max-w-[50%]"
+                      ? "bg-gray-200 text-gray-700 w-full max-w-[95%] md:max-w-[50%]"
+                      : "bg-blue-100 text-gray-900 max-w-[95%]  md:max-w-[50%]"
                   }`}
                 >
                   {message.sender === "agent" ? (
