@@ -5,6 +5,7 @@ import {
   useGetAgentByIdQuery,
 } from "../../redux/features/agent/agentApiSlice";
 import { useParams } from "react-router-dom";
+import Loading from "../../utils/CLoading/Loading";
 
 const Widget = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const Widget = () => {
 
     const userMessage = {
       question: input,
-      // Include any additional properties you need for the message here
+      agentId: id,
     };
 
     setMessages((prevMessages) => [
@@ -51,7 +52,7 @@ const Widget = () => {
   }, [messages]);
 
   if (isFetching) {
-    return <p>Loading Agent Data...</p>;
+    return <Loading/>;
   }
 
   return (
