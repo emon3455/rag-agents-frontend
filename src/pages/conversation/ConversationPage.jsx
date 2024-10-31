@@ -8,6 +8,7 @@ const ConversationPage = () => {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
   const messageEndRef = useRef(null);
 
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
@@ -25,36 +26,56 @@ const ConversationPage = () => {
 
     try {
       const response = await askQuestion(userMessage).unwrap();
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: response.answer, sender: "agent" },
-      ]);
+      animateAgentResponse(response.answer); // Start word-by-word typing effect
     } catch (error) {
       console.error("Error fetching the agent response:", error);
     }
   };
 
+  const animateAgentResponse = (fullText) => {
+    const words = fullText.split(" ");
+    let index = 0;
+    setCurrentMessage(""); // Reset current message
+
+    const typingInterval = setInterval(() => {
+      if (index < words.length) {
+        setCurrentMessage((prev) =>
+          prev ? `${prev} ${words[index]}` : words[index]
+        );
+        index++;
+      } else {
+        clearInterval(typingInterval);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: fullText, sender: "agent" },
+        ]);
+        setCurrentMessage(""); // Clear current message after adding to messages
+      }
+    }, 50); // Faster interval speed for word-by-word display
+  };
+
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && e.shiftKey === false) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, currentMessage]);
 
   return (
     <div className="md:ml-64">
       <ConversationSidebar widgetId={id} />
-      <div className="w-full mx-auto  h-screen flex flex-col justify-between p-5 bg-gray-100  ">
+      <div className="w-full mx-auto h-screen flex flex-col justify-between p-5 bg-gray-100">
         <div className="flex-1 overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
             <div
               key={index}
               className={`flex ${
                 message.sender === "user" ? "justify-end" : "justify-start"
-              } mb-2 `}
+              } mb-2`}
             >
               {message.sender === "agent" && (
                 <img
@@ -64,30 +85,30 @@ const ConversationPage = () => {
                 />
               )}
               <div
-                className={`rounded-lg px-4 py-2  ${
+                dangerouslySetInnerHTML={{ __html: message.text }}
+                className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-1/3"
-                    : "bg-transparent w-1/2"
-                } `}
+                    ? "bg-gray-200 text-gray-700  max-w-[50%]" // User message with max-width of 50%
+                    : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
+                }`}
               >
-                {message.text}
+                {/* {message.text} */}
               </div>
             </div>
           ))}
-          {isLoading && (
+          {(isLoading || currentMessage) && (
             <div className="flex justify-start mb-2">
               <img
                 src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
                 alt="Agent"
                 className="w-8 h-8 rounded-full mr-2"
               />
-              <div className="flex items-center">
-                <p className="animate-pulse">Thinking...</p>
+              <div className="bg-blue-100 p-2 rounded-lg max-w-[50%]">
+                <span>{currentMessage || "Thinking..."}</span>
               </div>
             </div>
           )}
-          <div ref={messageEndRef} />{" "}
-          {/* This is the reference for scrolling */}
+          <div ref={messageEndRef} /> {/* Reference for auto-scroll */}
         </div>
         <div className="flex items-center relative">
           <textarea
@@ -96,7 +117,7 @@ const ConversationPage = () => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask a question..."
-            className="resize-none w-full border rounded-lg p-2 focus:outline-none overflow-hidden"
+            className="w-full border rounded-lg p-2 focus:outline-none resize-none"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",

@@ -17,7 +17,7 @@ const ConversationSidebar = ({ widgetId }) => {
   const [showAgentPageModal, setShowAgentPageModal] = useState(false);
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
-  const agentPageCode = `https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}`;
+  const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
