@@ -12,6 +12,7 @@ const ConversationPage = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false); // State for copy success alert
   const messageEndRef = useRef(null);
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
   const [speechSynthesis] = useState(window.speechSynthesis);
@@ -67,6 +68,8 @@ const ConversationPage = () => {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
+    setCopySuccess(true); // Show success alert
+    setTimeout(() => setCopySuccess(false), 2000); // Hide after 2 seconds
   };
 
   const handleReadOutLoud = (text) => {
@@ -193,6 +196,11 @@ const ConversationPage = () => {
             <FiSend size={24} />
           </button>
         </div>
+        {copySuccess && (
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-green-200 text-green-800 p-2 rounded-lg shadow-md">
+            Message copied to clipboard!
+          </div>
+        )}
       </div>
     </div>
   );
