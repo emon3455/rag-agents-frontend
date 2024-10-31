@@ -85,13 +85,14 @@ const ConversationPage = () => {
                 />
               )}
               <div
+                dangerouslySetInnerHTML={{ __html: message.text }}
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
                     ? "bg-gray-200 text-gray-700  max-w-[50%]" // User message with max-width of 50%
                     : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
                 }`}
               >
-                {message.text}
+                {/* {message.text} */}
               </div>
             </div>
           ))}
