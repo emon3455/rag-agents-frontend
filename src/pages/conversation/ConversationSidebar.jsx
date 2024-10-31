@@ -14,8 +14,10 @@ const ConversationSidebar = ({ widgetId }) => {
   const user = useSelector((state) => state.userSlice.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showWidgetModal, setShowWidgetModal] = useState(false);
+  const [showAgentPageModal, setShowAgentPageModal] = useState(false);
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
+  const agentPageCode = `https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(scriptCode);
@@ -105,7 +107,9 @@ const ConversationSidebar = ({ widgetId }) => {
                     Widget
                   </li>
                   <li>API</li>
-                  <li>Agent Page</li>
+                  <li onClick={() => setShowAgentPageModal(true)}>
+                    Agent Page
+                  </li>
                 </ul>
               </ul>
             )}
@@ -142,6 +146,25 @@ const ConversationSidebar = ({ widgetId }) => {
         <div className="h-60">
           <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
             <code>{scriptCode}</code>
+          </pre>
+          <CButton
+            onClick={handleCopy}
+            variant="solid"
+            className="ml-auto text-white"
+          >
+            <FiCopy size={20} /> Copy to Clipboard
+          </CButton>
+        </div>
+      </CModal>
+      <CModal
+        open={showAgentPageModal}
+        height="h-10"
+        title="Share Agent Page"
+        onClose={() => setShowAgentPageModal(false)}
+      >
+        <div className="h-60">
+          <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
+            <code>{agentPageCode}</code>
           </pre>
           <CButton
             onClick={handleCopy}
