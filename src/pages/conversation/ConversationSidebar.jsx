@@ -4,11 +4,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/features/auth/authSlice";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { FaCircleChevronDown } from "react-icons/fa6";
+import CModal from "../../utils/CModal/CModal";
+import { FiCopy } from "react-icons/fi"; // Icon for the copy button, optional
+import CButton from "../../utils/CButton/CButton";
+import { successAlert } from "../../utils/allertFunction";
 
 const ConversationSidebar = ({ widgetId }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSelector((state) => state.userSlice.user);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showWidgetModal, setShowWidgetModal] = useState(false);
+
+  const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(scriptCode);
+    successAlert({ title: "Script copied to clipboard!" });
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,8 +100,9 @@ const ConversationSidebar = ({ widgetId }) => {
                     showDropdown ? "max-h-40" : "max-h-0"
                   } pl-6 leading-10 font-medium`}
                 >
-                  <li>
-                    <Link to={`/agent-widget/${widgetId}`}>Widget</Link>
+                  <li className="" onClick={() => setShowWidgetModal(true)}>
+                    {/* <Link to={`/agent-widget/${widgetId}`}>Widget</Link> */}
+                    Widget
                   </li>
                   <li>API</li>
                   <li>Agent Page</li>
@@ -120,6 +133,25 @@ const ConversationSidebar = ({ widgetId }) => {
           </div>
         </nav>
       </div>
+      <CModal
+        open={showWidgetModal}
+        height="h-10"
+        title="Share Widget"
+        onClose={() => setShowWidgetModal(false)}
+      >
+        <div className="h-60">
+          <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
+            <code>{scriptCode}</code>
+          </pre>
+          <CButton
+            onClick={handleCopy}
+            variant="solid"
+            className="ml-auto text-white"
+          >
+            <FiCopy size={20} /> Copy to Clipboard
+          </CButton>
+        </div>
+      </CModal>
     </div>
   );
 };
