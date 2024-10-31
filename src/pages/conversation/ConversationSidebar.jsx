@@ -19,11 +19,10 @@ const ConversationSidebar = ({ widgetId }) => {
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
-  const reqBody = `
-                  {
-                  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
-                  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
-                  }
+  const reqBody = `{
+  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
+  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
+}
               `;
 
   const reqUrl = ` https://rag-agent-js.vercel.app/api/agents/ask-question`;
@@ -230,9 +229,9 @@ const ConversationSidebar = ({ widgetId }) => {
             <pre className="bg-gray-900 p-3 rounded-md flex items-center whitespace-nowrap">
               <code className="text-white">Body</code>
             </pre>
-            <div className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden">
-              <code className="text-white whitespace-normal">{reqBody}</code>
-            </div>
+            <pre className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden overflow-x-auto">
+              <code className="text-white ">{reqBody}</code>
+            </pre>
             <button
               onClick={() => handleCopy(reqBody)}
               className="text-white bg-gray-900 rounded p-3 "
