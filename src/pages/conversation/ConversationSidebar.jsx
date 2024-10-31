@@ -19,6 +19,14 @@ const ConversationSidebar = ({ widgetId }) => {
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
+  const reqBody = `
+                  {
+                  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
+                  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
+                  }
+              `;
+
+  const reqUrl = ` https://rag-agent-js.vercel.app/api/agents/ask-question`;
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -207,17 +215,14 @@ const ConversationSidebar = ({ widgetId }) => {
               <code className="text-white">POST</code>
             </pre>
             <div className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden">
-              <code className="text-white whitespace-normal">
-                https://rag-agent-js.vercel.app/api/agents/ask-question
-              </code>
+              <code className="text-white whitespace-normal">{reqUrl}</code>
             </div>
-            <CButton
-              // onClick={() => handleCopy(apiCode)}
-              variant="solid"
-              className="text-white bg-gray-900 rounded-md"
+            <button
+              onClick={() => handleCopy(reqUrl)}
+              className="text-white bg-gray-900 rounded p-3"
             >
               <FiCopy size={20} />
-            </CButton>
+            </button>
           </div>
 
           {/* Request Body Section */}
@@ -226,22 +231,14 @@ const ConversationSidebar = ({ widgetId }) => {
               <code className="text-white">Body</code>
             </pre>
             <div className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden">
-              <code className="text-white whitespace-normal">
-                {`
-                  {
-                  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
-                  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
-                  }
-              `}
-              </code>
+              <code className="text-white whitespace-normal">{reqBody}</code>
             </div>
-            <CButton
-              // onClick={() => handleCopy(bodyCode)}
-              variant="solid"
-              className="text-white bg-gray-900 rounded-md "
+            <button
+              onClick={() => handleCopy(reqBody)}
+              className="text-white bg-gray-900 rounded p-3 "
             >
               <FiCopy size={20} />
-            </CButton>
+            </button>
           </div>
         </div>
       </CModal>
