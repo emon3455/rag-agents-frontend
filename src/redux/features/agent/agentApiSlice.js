@@ -10,8 +10,8 @@ export const agentApiSlice = apiSlice.injectEndpoints({
     }),
 
     getUserAllAgent: builder.query({
-      query: () => ({
-        url: `/api/agents/userAllAgent?userId=67178a2386cc1454cdac7fb5`,
+      query: (userId) => ({
+        url: `/api/agents/userAllAgent?userId=${userId}`,
         method: "GET",
       }),
     }),

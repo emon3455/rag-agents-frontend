@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
 import CButton from "../../utils/CButton/CButton";
 import {
-  useGetAllAgentQuery,
+  useGetUserAllAgentQuery,
   useCreateAgentMutation,
   useDeleteAgentMutation,
 } from "../../redux/features/agent/agentApiSlice";
@@ -16,13 +16,16 @@ import {
 
 const AgentPage = () => {
   const navigate = useNavigate();
+  const user  = JSON.parse(localStorage.getItem('ODL-LLM-USER'))
   const {
     data: agents,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGetAllAgentQuery();
+  } = useGetUserAllAgentQuery(user?._id);
+  console.log(agents);
+  
   const [showDropdown, setShowDropdown] = useState("");
   const dropdownRef = useRef(null);
   const [createAgent] = useCreateAgentMutation();
@@ -138,8 +141,8 @@ const AgentPage = () => {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-screen-xl mx-auto">
-            {agents?.length > 0 ? (
-              agents.map((agent) => (
+            {agents?.agents?.length > 0 ? (
+              agents?.agents.map((agent) => (
                 <div
                   key={agent._id}
                   className="group relative border  rounded-md shadow-md overflow-hidden"
