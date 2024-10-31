@@ -52,7 +52,7 @@ const Widget = () => {
   }, [messages]);
 
   if (isFetching) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -73,14 +73,14 @@ const Widget = () => {
                 <img
                   src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
                   alt="Agent"
-                  className="w-8 h-8 rounded-full mr-2"
+                  className="w-8 h-8 rounded-full mr-2 hidden md:block"
                 />
               )}
               <div
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-1/3"
-                    : "bg-transparent w-1/2"
+                    ? "bg-gray-200 text-gray-700 md:w-1/3"
+                    : "bg-blue-200 bg-transparent md:w-1/2"
                 }`}
               >
                 {message.text}
