@@ -55,10 +55,12 @@ const Widget = () => {
   }
 
   return (
-    <div className="w-full mx-auto h-screen flex flex-col justify-between p-5 bg-gray-100">
-      <h1 className="bg-black  p-2 text-white">{agentData?.agent_name}</h1>
-      <div>
-        <div className="flex-1 overflow-y-auto mb-4 h-full">
+    <div className="w-full mx-auto flex flex-col justify-between h-screen  bg-gray-100">
+      <h1 className="bg-black  p-4 text-white font-bold text-lg">
+        {agentData?.agent_name}
+      </h1>
+      <div className="p-5">
+        <div className=" ">
           {messages.map((message, index) => (
             <div
               key={index}

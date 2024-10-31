@@ -3,10 +3,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/features/auth/authSlice";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
+import { FaCircleChevronDown } from "react-icons/fa6";
+import CModal from "../../utils/CModal/CModal";
+import { FiCopy } from "react-icons/fi"; // Icon for the copy button, optional
+import CButton from "../../utils/CButton/CButton";
+import { successAlert } from "../../utils/allertFunction";
 
-const ConversationSidebar = () => {
+const ConversationSidebar = ({ widgetId }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useSelector((state) => state.userSlice.user);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showWidgetModal, setShowWidgetModal] = useState(false);
+  const [showAgentPageModal, setShowAgentPageModal] = useState(false);
+
+  const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
+  const agentPageCode = `https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(scriptCode);
+    successAlert({ title: "Script copied to clipboard!" });
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,6 +83,36 @@ const ConversationSidebar = () => {
                 Agent
               </Link>
             )}
+            {user?._id && (
+              <ul className="relative">
+                <li
+                  className="flex items-center   gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  Share
+                  <FaCircleChevronDown
+                    className={`w-5 transition  ${
+                      showDropdown ? "-rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </li>
+
+                <ul
+                  className={`overflow-hidden transition-all duration-300 ${
+                    showDropdown ? "max-h-40" : "max-h-0"
+                  } pl-6 leading-10 font-medium`}
+                >
+                  <li className="" onClick={() => setShowWidgetModal(true)}>
+                    {/* <Link to={`/agent-widget/${widgetId}`}>Widget</Link> */}
+                    Widget
+                  </li>
+                  <li>API</li>
+                  <li onClick={() => setShowAgentPageModal(true)}>
+                    Agent Page
+                  </li>
+                </ul>
+              </ul>
+            )}
           </div>
           <div className="p-6 py-5">
             {user?._id ? (
@@ -90,6 +137,44 @@ const ConversationSidebar = () => {
           </div>
         </nav>
       </div>
+      <CModal
+        open={showWidgetModal}
+        height="h-10"
+        title="Share Widget"
+        onClose={() => setShowWidgetModal(false)}
+      >
+        <div className="h-60">
+          <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
+            <code>{scriptCode}</code>
+          </pre>
+          <CButton
+            onClick={handleCopy}
+            variant="solid"
+            className="ml-auto text-white"
+          >
+            <FiCopy size={20} /> Copy to Clipboard
+          </CButton>
+        </div>
+      </CModal>
+      <CModal
+        open={showAgentPageModal}
+        height="h-10"
+        title="Share Agent Page"
+        onClose={() => setShowAgentPageModal(false)}
+      >
+        <div className="h-60">
+          <pre className="bg-gray-900 p-3 rounded-md my-4 text-wrap h-full flex items-center ">
+            <code>{agentPageCode}</code>
+          </pre>
+          <CButton
+            onClick={handleCopy}
+            variant="solid"
+            className="ml-auto text-white"
+          >
+            <FiCopy size={20} /> Copy to Clipboard
+          </CButton>
+        </div>
+      </CModal>
     </div>
   );
 };
