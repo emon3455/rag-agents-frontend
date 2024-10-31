@@ -86,7 +86,7 @@ const ConversationSidebar = ({ widgetId }) => {
             {user?._id && (
               <ul className="relative">
                 <li
-                  className="flex items-center   gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
+                  className="flex items-center justify-between  gap-2 text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-orange-500 transition-all duration-400"
                   onClick={() => setShowDropdown(!showDropdown)}
                 >
                   Share
@@ -102,12 +102,20 @@ const ConversationSidebar = ({ widgetId }) => {
                     showDropdown ? "max-h-40" : "max-h-0"
                   } pl-6 leading-10 font-medium`}
                 >
-                  <li className="" onClick={() => setShowWidgetModal(true)}>
+                  <li
+                    className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition"
+                    onClick={() => setShowWidgetModal(true)}
+                  >
                     {/* <Link to={`/agent-widget/${widgetId}`}>Widget</Link> */}
                     Widget
                   </li>
-                  <li>API</li>
-                  <li onClick={() => setShowAgentPageModal(true)}>
+                  <li className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition">
+                    API
+                  </li>
+                  <li
+                    className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition"
+                    onClick={() => setShowAgentPageModal(true)}
+                  >
                     Agent Page
                   </li>
                 </ul>
