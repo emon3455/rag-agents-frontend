@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useAskQuestionMutation } from "../../redux/features/agent/agentApiSlice";
 import { FiSend } from "react-icons/fi";
 import ConversationSidebar from "./ConversationSidebar";
+import { GrPowerCycle } from "react-icons/gr";
+import { FaClipboard, FaVolumeUp } from "react-icons/fa";
+import ReactMarkdown from "react-markdown"; // Import markdown renderer
 
 const ConversationPage = () => {
   const { id } = useParams();
@@ -10,8 +13,9 @@ const ConversationPage = () => {
   const [input, setInput] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
   const messageEndRef = useRef(null);
-
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
+  const [speechSynthesis] = useState(window.speechSynthesis);
+  const [reading, setReading] = useState(false);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -61,6 +65,34 @@ const ConversationPage = () => {
     }
   };
 
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  const handleReadOutLoud = (text) => {
+    if (reading) {
+      speechSynthesis.cancel(); // Stop speaking if already reading
+      setReading(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setReading(false); // Reset reading state when done
+    speechSynthesis.speak(utterance);
+    setReading(true);
+  };
+
+  const handleRegenerate = () => {
+    if (
+      messages.length > 0 &&
+      messages[messages.length - 1].sender === "user"
+    ) {
+      const lastUserMessage = messages[messages.length - 1].text;
+      setInput(lastUserMessage); // Set input to last user message
+      sendMessage(); // Regenerate response
+    }
+  };
+
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, currentMessage]);
@@ -69,7 +101,7 @@ const ConversationPage = () => {
     <div className="md:ml-64">
       <ConversationSidebar widgetId={id} />
       <div className="w-full mx-auto h-screen flex flex-col justify-between p-5 bg-gray-100">
-        <div className="flex-1 overflow-y-auto mb-4 h-full">
+        <div className="flex flex-col overflow-y-auto mb-4 h-full">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -85,15 +117,45 @@ const ConversationPage = () => {
                 />
               )}
               <div
-                dangerouslySetInnerHTML={{ __html: message.text }}
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700  max-w-[50%]" // User message with max-width of 50%
+                    ? "bg-gray-200 text-gray-700 max-w-[50%]" // User message with max-width of 50%
                     : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
                 }`}
               >
-                {/* {message.text} */}
+                {message.sender === "agent" ? (
+                  <ReactMarkdown>{message.text}</ReactMarkdown> // Render markdown for agent messages
+                ) : (
+                  <span>{message.text}</span>
+                )}
               </div>
+              {message.sender === "agent" && ( // Only show buttons for agent messages
+                <div className="flex space-x-2 ml-2">
+                  <button
+                    onClick={() => handleCopy(message.text)}
+                    aria-label="Copy message"
+                    className="text-gray-600 hover:text-orange-500"
+                  >
+                    <FaClipboard />
+                  </button>
+                  <button
+                    onClick={() => handleReadOutLoud(message.text)}
+                    aria-label="Read out loud"
+                    className={`text-gray-600 hover:text-orange-500 ${
+                      reading ? "text-red-500" : ""
+                    }`}
+                  >
+                    <FaVolumeUp />
+                  </button>
+                  <button
+                    onClick={handleRegenerate}
+                    aria-label="Regenerate response"
+                    className="text-gray-600 hover:text-orange-500"
+                  >
+                    <GrPowerCycle />
+                  </button>
+                </div>
+              )}
             </div>
           ))}
           {(isLoading || currentMessage) && (
