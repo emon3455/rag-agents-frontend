@@ -87,8 +87,8 @@ const ConversationPage = () => {
               <div
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-1/3"
-                    : "bg-blue-100 text-gray-900 w-1/2"
+                    ? "bg-gray-200 text-gray-700  max-w-[50%]" // User message with max-width of 50%
+                    : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
                 }`}
               >
                 {message.text}
@@ -102,7 +102,7 @@ const ConversationPage = () => {
                 alt="Agent"
                 className="w-8 h-8 rounded-full mr-2"
               />
-              <div className="bg-blue-100 p-2 rounded-lg">
+              <div className="bg-blue-100 p-2 rounded-lg max-w-[50%]">
                 <span>{currentMessage || "Thinking..."}</span>
               </div>
             </div>
