@@ -6,6 +6,7 @@ import {
 } from "../../redux/features/agent/agentApiSlice";
 import { useParams } from "react-router-dom";
 import Loading from "../../utils/CLoading/Loading";
+import ReactMarkdown from "react-markdown";
 
 const Widget = () => {
   const { id } = useParams();
@@ -52,7 +53,7 @@ const Widget = () => {
   }, [messages]);
 
   if (isFetching) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -73,17 +74,21 @@ const Widget = () => {
                 <img
                   src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
                   alt="Agent"
-                  className="w-8 h-8 rounded-full mr-2"
+                  className="w-8 h-8 rounded-full mr-2 hidden md:block"
                 />
               )}
               <div
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-1/3"
-                    : "bg-transparent w-1/2"
+                    ? "bg-gray-200 text-gray-700 w-full max-w-[95%] md:max-w-[50%]"
+                    : "bg-blue-100 text-gray-900 max-w-[95%]  md:max-w-[50%]"
                 }`}
               >
-                {message.text}
+                {message.sender === "agent" ? (
+                  <ReactMarkdown>{message.text}</ReactMarkdown>
+                ) : (
+                  <span>{message.text}</span>
+                )}
               </div>
             </div>
           ))}

@@ -15,9 +15,17 @@ const ConversationSidebar = ({ widgetId }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showWidgetModal, setShowWidgetModal] = useState(false);
   const [showAgentPageModal, setShowAgentPageModal] = useState(false);
+  const [showApiModal, setShowApiModal] = useState(false);
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
+  const reqBody = `{
+  "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
+  "question": "Can you tell me about the ny estate law.ai" // Replace with your question
+}
+              `;
+
+  const reqUrl = ` https://rag-agent-js.vercel.app/api/agents/ask-question`;
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -109,7 +117,10 @@ const ConversationSidebar = ({ widgetId }) => {
                     {/* <Link to={`/agent-widget/${widgetId}`}>Widget</Link> */}
                     Widget
                   </li>
-                  <li className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition">
+                  <li
+                    className="hover:bg-orange-500 cursor-pointer px-2 rounded-md transition"
+                    onClick={() => setShowApiModal(true)}
+                  >
                     API
                   </li>
                   <li
@@ -181,6 +192,53 @@ const ConversationSidebar = ({ widgetId }) => {
           >
             <FiCopy size={20} /> Copy to Clipboard
           </CButton>
+        </div>
+      </CModal>
+      <CModal
+        open={showApiModal}
+        height=""
+        width="w-full md:w-2/3 lg:w-1/2"
+        title="HOW TO USE OUR API"
+        onClose={() => setShowApiModal(false)}
+      >
+        <div className="p-4 bg-white rounded-md">
+          <p className="text-gray-800 mb-4">
+            To retrieve information from the API, send a <strong>POST</strong>{" "}
+            request to the following endpoint with the required parameters in
+            the request body.
+          </p>
+
+          {/* API Endpoint Section */}
+          <div className="flex gap-2 mb-4">
+            <pre className="bg-gray-900 p-3 rounded-md flex items-center whitespace-nowrap">
+              <code className="text-white">POST</code>
+            </pre>
+            <div className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden">
+              <code className="text-white whitespace-normal">{reqUrl}</code>
+            </div>
+            <button
+              onClick={() => handleCopy(reqUrl)}
+              className="text-white bg-gray-900 rounded p-3"
+            >
+              <FiCopy size={20} />
+            </button>
+          </div>
+
+          {/* Request Body Section */}
+          <div className="flex gap-2 mb-4">
+            <pre className="bg-gray-900 p-3 rounded-md flex items-center whitespace-nowrap">
+              <code className="text-white">Body</code>
+            </pre>
+            <pre className="bg-gray-900 p-3 rounded-md flex items-center overflow-hidden overflow-x-auto">
+              <code className="text-white ">{reqBody}</code>
+            </pre>
+            <button
+              onClick={() => handleCopy(reqBody)}
+              className="text-white bg-gray-900 rounded p-3 "
+            >
+              <FiCopy size={20} />
+            </button>
+          </div>
         </div>
       </CModal>
     </div>

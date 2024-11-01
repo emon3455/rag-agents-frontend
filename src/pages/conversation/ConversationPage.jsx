@@ -5,41 +5,45 @@ import { FiSend } from "react-icons/fi";
 import ConversationSidebar from "./ConversationSidebar";
 import { GrPowerCycle } from "react-icons/gr";
 import { FaClipboard, FaVolumeUp } from "react-icons/fa";
-import ReactMarkdown from "react-markdown"; // Import markdown renderer
+import ReactMarkdown from "react-markdown";
 
 const ConversationPage = () => {
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [currentMessage, setCurrentMessage] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
   const messageEndRef = useRef(null);
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
   const [speechSynthesis] = useState(window.speechSynthesis);
   const [reading, setReading] = useState(false);
+  const [regenerateMode, setRegenerateMode] = useState(false);
+
+  console.log("messages", messages);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() && !regenerateMode) return;
 
-    const userMessage = {
-      agentId: id,
-      question: input,
-    };
+    const userMessage = { agentId: id, question: input };
 
-    setMessages([...messages, { text: input, sender: "user" }]);
-    setInput("");
+    if (!regenerateMode) {
+      setMessages([...messages, { text: input, sender: "user" }]);
+      setInput("");
+    }
 
     try {
       const response = await askQuestion(userMessage).unwrap();
-      animateAgentResponse(response.answer); // Start word-by-word typing effect
+      animateAgentResponse(response.answer, regenerateMode);
+      setRegenerateMode(false);
     } catch (error) {
       console.error("Error fetching the agent response:", error);
     }
   };
 
-  const animateAgentResponse = (fullText) => {
+  const animateAgentResponse = (fullText, isRegeneration = false) => {
     const words = fullText.split(" ");
     let index = 0;
-    setCurrentMessage(""); // Reset current message
+    setCurrentMessage("");
 
     const typingInterval = setInterval(() => {
       if (index < words.length) {
@@ -49,13 +53,22 @@ const ConversationPage = () => {
         index++;
       } else {
         clearInterval(typingInterval);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: fullText, sender: "agent" },
-        ]);
-        setCurrentMessage(""); // Clear current message after adding to messages
+
+        setMessages((prevMessages) => {
+          if (isRegeneration) {
+            const updatedMessages = [...prevMessages];
+            updatedMessages[updatedMessages.length - 1] = {
+              text: fullText,
+              sender: "agent",
+            };
+            return updatedMessages;
+          }
+          return [...prevMessages, { text: fullText, sender: "agent" }];
+        });
+
+        setCurrentMessage("");
       }
-    }, 50); // Faster interval speed for word-by-word display
+    }, 50);
   };
 
   const handleKeyDown = (e) => {
@@ -67,29 +80,29 @@ const ConversationPage = () => {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
   };
 
   const handleReadOutLoud = (text) => {
     if (reading) {
-      speechSynthesis.cancel(); // Stop speaking if already reading
+      speechSynthesis.cancel();
       setReading(false);
       return;
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.onend = () => setReading(false); // Reset reading state when done
+    utterance.onend = () => setReading(false);
     speechSynthesis.speak(utterance);
     setReading(true);
   };
 
-  const handleRegenerate = () => {
-    if (
-      messages.length > 0 &&
-      messages[messages.length - 1].sender === "user"
-    ) {
-      const lastUserMessage = messages[messages.length - 1].text;
-      setInput(lastUserMessage); // Set input to last user message
-      sendMessage(); // Regenerate response
+  const handleRegenerate = (index) => {
+    const lastUserMessage = messages[index - 1]?.text;
+    if (lastUserMessage) {
+      setInput(lastUserMessage);
+      setRegenerateMode(true);
+      sendMessage();
     }
   };
 
@@ -105,7 +118,7 @@ const ConversationPage = () => {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${
+              className={`flex   ${
                 message.sender === "user" ? "justify-end" : "justify-start"
               } mb-2`}
             >
@@ -117,45 +130,49 @@ const ConversationPage = () => {
                 />
               )}
               <div
-                className={`rounded-lg px-4 py-2 ${
-                  message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 max-w-[50%]" // User message with max-width of 50%
-                    : "bg-blue-100 text-gray-900 max-w-[50%]" // Agent message with max-width of 50%
-                }`}
+                className={`w-full ${message.sender === "user" && "text-end"} `}
               >
-                {message.sender === "agent" ? (
-                  <ReactMarkdown>{message.text}</ReactMarkdown> // Render markdown for agent messages
-                ) : (
-                  <span>{message.text}</span>
+                <div
+                  className={`rounded-lg px-4 py-2 mb-2  ${
+                    message.sender === "user"
+                      ? "bg-gray-200 text-gray-700  max-w-[95%] md:max-w-[40%] inline-block ml-auto "
+                      : "bg-blue-100 text-gray-900 max-w-[95%]  md:max-w-[50%]"
+                  }`}
+                >
+                  {message.sender === "agent" ? (
+                    <ReactMarkdown>{message.text}</ReactMarkdown>
+                  ) : (
+                    <span>{message.text}</span>
+                  )}
+                </div>
+                {message.sender === "agent" && (
+                  <div className="flex space-x-4 my-2 justify-end max-w-[50%]">
+                    <button
+                      onClick={() => handleCopy(message.text)}
+                      aria-label="Copy message"
+                      className="text-gray-600 hover:text-orange-500"
+                    >
+                      <FaClipboard />
+                    </button>
+                    <button
+                      onClick={() => handleReadOutLoud(message.text)}
+                      aria-label="Read out loud"
+                      className={`text-gray-600 hover:text-orange-500 ${
+                        reading ? "text-red-500" : ""
+                      }`}
+                    >
+                      <FaVolumeUp />
+                    </button>
+                    <button
+                      onClick={() => handleRegenerate(index)}
+                      aria-label="Regenerate response"
+                      className="text-gray-600 hover:text-orange-500"
+                    >
+                      <GrPowerCycle />
+                    </button>
+                  </div>
                 )}
               </div>
-              {message.sender === "agent" && ( // Only show buttons for agent messages
-                <div className="flex space-x-2 ml-2">
-                  <button
-                    onClick={() => handleCopy(message.text)}
-                    aria-label="Copy message"
-                    className="text-gray-600 hover:text-orange-500"
-                  >
-                    <FaClipboard />
-                  </button>
-                  <button
-                    onClick={() => handleReadOutLoud(message.text)}
-                    aria-label="Read out loud"
-                    className={`text-gray-600 hover:text-orange-500 ${
-                      reading ? "text-red-500" : ""
-                    }`}
-                  >
-                    <FaVolumeUp />
-                  </button>
-                  <button
-                    onClick={handleRegenerate}
-                    aria-label="Regenerate response"
-                    className="text-gray-600 hover:text-orange-500"
-                  >
-                    <GrPowerCycle />
-                  </button>
-                </div>
-              )}
             </div>
           ))}
           {(isLoading || currentMessage) && (
@@ -170,7 +187,7 @@ const ConversationPage = () => {
               </div>
             </div>
           )}
-          <div ref={messageEndRef} /> {/* Reference for auto-scroll */}
+          <div ref={messageEndRef} />
         </div>
         <div className="flex items-center relative">
           <textarea
@@ -180,10 +197,7 @@ const ConversationPage = () => {
             onKeyDown={handleKeyDown}
             placeholder="Ask a question..."
             className="w-full border rounded-lg p-2 focus:outline-none resize-none"
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           />
           <button
             onClick={sendMessage}
@@ -193,6 +207,11 @@ const ConversationPage = () => {
             <FiSend size={24} />
           </button>
         </div>
+        {copySuccess && (
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-100 text-green-800 p-2 rounded-lg shadow-md">
+            Message copied to clipboard!
+          </div>
+        )}
       </div>
     </div>
   );
