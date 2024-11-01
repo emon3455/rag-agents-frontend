@@ -44,6 +44,7 @@ const Widget = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
@@ -57,11 +58,11 @@ const Widget = () => {
   }
 
   return (
-    <div className="w-full mx-auto flex flex-col justify-between h-screen  bg-gray-100">
+    <div className="w-full mx-auto flex flex-col justify-between h-screen  ">
       <h1 className="bg-black  p-4 text-white font-bold text-lg">
         {agentData?.agent_name}
       </h1>
-      <div className="p-5">
+      <div className="p-5  flex h-full justify-between flex-col">
         <div className=" ">
           {messages.map((message, index) => (
             <div
@@ -70,18 +71,11 @@ const Widget = () => {
                 message.sender === "user" ? "justify-end" : "justify-start"
               } mb-2`}
             >
-              {message.sender === "agent" && (
-                <img
-                  src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
-                  alt="Agent"
-                  className="w-8 h-8 rounded-full mr-2 hidden md:block"
-                />
-              )}
               <div
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-full max-w-[95%] md:max-w-[50%]"
-                    : "bg-blue-100 text-gray-900 max-w-[95%]  md:max-w-[50%]"
+                    ? "bg-gray-100 text-gray-700 w-full max-w-[70%] md:max-w-[50%]"
+                    : "bg-blue-100 text-gray-900 max-w-[70%]  md:max-w-[50%]"
                 }`}
               >
                 {message.sender === "agent" ? (
@@ -93,12 +87,7 @@ const Widget = () => {
             </div>
           ))}
           {isLoading && (
-            <div className="flex justify-start mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
-                alt="Agent"
-                className="w-8 h-8 rounded-full mr-2"
-              />
+            <div className="flex justify-start mb-2 bg-blue-100 p-3 rounded-lg max-w-[70%]">
               <div className="flex items-center">
                 <p className="animate-pulse">Thinking...</p>
               </div>
@@ -128,7 +117,7 @@ const Widget = () => {
             <FiSend size={24} />
           </button>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };

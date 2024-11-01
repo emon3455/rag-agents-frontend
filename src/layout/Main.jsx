@@ -10,7 +10,8 @@ const Main = () => {
   const hideNavbar =
     excludedPaths.includes(pathname) ||
     pathname.startsWith("/conversation") ||
-    pathname.startsWith("/agent-widget");
+    pathname.startsWith("/agent-widget") ||
+    pathname.startsWith("/share-agent");
 
   return (
     <main className="bg-white text-black relative">
