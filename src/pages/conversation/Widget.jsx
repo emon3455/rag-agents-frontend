@@ -88,11 +88,6 @@ const Widget = () => {
           ))}
           {isLoading && (
             <div className="flex justify-start mb-2">
-              <img
-                src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGFpJTIwcm9ib3R8ZW58MHx8MHx8fDA%3D"
-                alt="Agent"
-                className="w-8 h-8 rounded-full mr-2"
-              />
               <div className="flex items-center">
                 <p className="animate-pulse">Thinking...</p>
               </div>
