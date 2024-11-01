@@ -127,11 +127,13 @@ const ConversationPage = () => {
                   className="w-8 h-8 rounded-full mr-2"
                 />
               )}
-              <div className="w-full">
+              <div
+                className={`w-full ${message.sender === "user" && "text-end"} `}
+              >
                 <div
                   className={`rounded-lg px-4 py-2 mb-2  ${
                     message.sender === "user"
-                      ? "bg-gray-200 text-gray-700 w-full max-w-[95%] md:max-w-[40%] ml-auto "
+                      ? "bg-gray-200 text-gray-700  max-w-[95%] md:max-w-[40%] inline-block ml-auto "
                       : "bg-blue-100 text-gray-900 max-w-[95%]  md:max-w-[50%]"
                   }`}
                 >
