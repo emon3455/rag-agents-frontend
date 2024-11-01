@@ -7,7 +7,6 @@ import { FaCircleChevronDown } from "react-icons/fa6";
 import CModal from "../../utils/CModal/CModal";
 import { FiCopy } from "react-icons/fi"; // Icon for the copy button, optional
 import CButton from "../../utils/CButton/CButton";
-import { successAlert } from "../../utils/allertFunction";
 
 const ConversationSidebar = ({ widgetId }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,6 +15,7 @@ const ConversationSidebar = ({ widgetId }) => {
   const [showWidgetModal, setShowWidgetModal] = useState(false);
   const [showAgentPageModal, setShowAgentPageModal] = useState(false);
   const [showApiModal, setShowApiModal] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
   const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
@@ -29,7 +29,8 @@ const ConversationSidebar = ({ widgetId }) => {
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    successAlert({ title: "Script copied to clipboard!" });
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
   };
 
   const dispatch = useDispatch();
@@ -241,6 +242,11 @@ const ConversationSidebar = ({ widgetId }) => {
           </div>
         </div>
       </CModal>
+      {copySuccess && (
+        <div className="absolute z-[300] top-4 left-1/2 transform -translate-x-1/2 bg-green-100 text-green-800 p-2 rounded-lg shadow-md">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 };
