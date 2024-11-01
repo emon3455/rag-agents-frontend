@@ -18,7 +18,7 @@ const ConversationSidebar = ({ widgetId }) => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const scriptCode = `<script src="https://rag-agent-js.vercel.app/widget.js?agentId=${widgetId}"></script>`;
-  const agentPageCode = `https://rag-agent-frontend.vercel.app/agent-widget/${widgetId}`;
+  const agentPageCode = `https://rag-agent-frontend.vercel.app/share-agent/${widgetId}`;
   const reqBody = `{
   "agentId": "671790c727c737728ca31b78", // Replace with your Agent ID 
   "question": "Can you tell me about the ny estate law.ai" // Replace with your question

@@ -67,16 +67,14 @@ const ShareAgent = () => {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${
-                message.sender === "user" ? "justify-end" : "justify-start"
-              } mb-2`}
+              className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"
+                } mb-2`}
             >
               <div
-                className={`rounded-lg px-4 py-2 ${
-                  message.sender === "user"
-                    ? "bg-gray-100 text-gray-700 w-full max-w-[70%] md:max-w-[50%]"
+                className={`rounded-lg px-4 py-2 ${message.sender === "user"
+                    ? "bg-gray-100 text-gray-700 max-w-[70%] md:max-w-[50%]"
                     : "bg-blue-100 text-gray-900 max-w-[70%]  md:max-w-[50%]"
-                }`}
+                  }`}
               >
                 {message.sender === "agent" ? (
                   <ReactMarkdown>{message.text}</ReactMarkdown>
@@ -87,9 +85,9 @@ const ShareAgent = () => {
             </div>
           ))}
           {isLoading && (
-            <div className="flex justify-start mb-2 bg-blue-100 p-3 rounded-lg max-w-[70%]">
-              <div className="flex items-center">
-                <p className="animate-pulse">Thinking...</p>
+            <div className="flex justify-start mb-2">
+              <div className="bg-blue-100 text-gray-900 max-w-[70%] rounded-lg px-4 py-2">
+                <span className="animate-pulse">Thinking...</span>
               </div>
             </div>
           )}
