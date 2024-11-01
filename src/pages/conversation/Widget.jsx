@@ -87,7 +87,7 @@ const Widget = () => {
             </div>
           ))}
           {isLoading && (
-            <div className="flex justify-start mb-2">
+            <div className="flex justify-start mb-2 bg-blue-100 p-3 rounded-lg max-w-[70%]">
               <div className="flex items-center">
                 <p className="animate-pulse">Thinking...</p>
               </div>
