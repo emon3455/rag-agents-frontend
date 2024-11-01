@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAskQuestionMutation } from "../../redux/features/agent/agentApiSlice";
 import { FiSend } from "react-icons/fi";
 import ConversationSidebar from "./ConversationSidebar";
-import { GrPowerCycle } from "react-icons/gr";
+// import { GrPowerCycle } from "react-icons/gr";
 import { FaClipboard, FaVolumeUp } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 
@@ -16,7 +16,7 @@ const ConversationPage = () => {
   const messageEndRef = useRef(null);
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
   const [speechSynthesis] = useState(window.speechSynthesis);
-  const [reading, setReading] = useState(false);
+  const [reading, setReading] = useState(null);
   const [regenerateMode, setRegenerateMode] = useState(false);
 
   console.log("messages", messages);
@@ -84,27 +84,28 @@ const ConversationPage = () => {
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
-  const handleReadOutLoud = (text) => {
-    if (reading) {
+  const handleReadOutLoud = (text, index) => {
+    console.log("reading ", reading);
+    if (reading !== null) {
       speechSynthesis.cancel();
-      setReading(false);
+      setReading(null);
       return;
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.onend = () => setReading(false);
+    utterance.onend = () => setReading(null);
     speechSynthesis.speak(utterance);
-    setReading(true);
+    setReading(index);
   };
 
-  const handleRegenerate = (index) => {
-    const lastUserMessage = messages[index - 1]?.text;
-    if (lastUserMessage) {
-      setInput(lastUserMessage);
-      setRegenerateMode(true);
-      sendMessage();
-    }
-  };
+  // const handleRegenerate = (index) => {
+  //   const lastUserMessage = messages[index - 1]?.text;
+  //   if (lastUserMessage) {
+  //     setInput(lastUserMessage);
+  //     setRegenerateMode(true);
+  //     sendMessage();
+  //   }
+  // };
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -155,21 +156,21 @@ const ConversationPage = () => {
                       <FaClipboard />
                     </button>
                     <button
-                      onClick={() => handleReadOutLoud(message.text)}
+                      onClick={() => handleReadOutLoud(message.text, index)}
                       aria-label="Read out loud"
                       className={`text-gray-600 hover:text-orange-500 ${
-                        reading ? "text-red-500" : ""
+                        reading === index ? "text-red-500" : ""
                       }`}
                     >
                       <FaVolumeUp />
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleRegenerate(index)}
                       aria-label="Regenerate response"
                       className="text-gray-600 hover:text-orange-500"
                     >
                       <GrPowerCycle />
-                    </button>
+                    </button> */}
                   </div>
                 )}
               </div>
