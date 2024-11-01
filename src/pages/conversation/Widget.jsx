@@ -62,7 +62,7 @@ const Widget = () => {
       <h1 className="bg-black  p-4 text-white font-bold text-lg">
         {agentData?.agent_name}
       </h1>
-      <div className="p-5">
+      <div className="p-5  flex h-full justify-between flex-col">
         <div className=" ">
           {messages.map((message, index) => (
             <div
@@ -117,7 +117,7 @@ const Widget = () => {
             <FiSend size={24} />
           </button>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };
