@@ -44,6 +44,7 @@ const Widget = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
@@ -57,7 +58,7 @@ const Widget = () => {
   }
 
   return (
-    <div className="w-full mx-auto flex flex-col justify-between h-screen  bg-gray-100">
+    <div className="w-full mx-auto flex flex-col justify-between h-screen  ">
       <h1 className="bg-black  p-4 text-white font-bold text-lg">
         {agentData?.agent_name}
       </h1>
@@ -73,7 +74,7 @@ const Widget = () => {
               <div
                 className={`rounded-lg px-4 py-2 ${
                   message.sender === "user"
-                    ? "bg-gray-200 text-gray-700 w-full max-w-[70%] md:max-w-[50%]"
+                    ? "bg-gray-100 text-gray-700 w-full max-w-[70%] md:max-w-[50%]"
                     : "bg-blue-100 text-gray-900 max-w-[70%]  md:max-w-[50%]"
                 }`}
               >
