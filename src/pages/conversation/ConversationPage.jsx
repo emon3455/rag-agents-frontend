@@ -19,6 +19,8 @@ const ConversationPage = () => {
   const [reading, setReading] = useState(false);
   const [regenerateMode, setRegenerateMode] = useState(false);
 
+  console.log("messages", messages);
+
   const sendMessage = async () => {
     if (!input.trim() && !regenerateMode) return;
 
@@ -95,8 +97,8 @@ const ConversationPage = () => {
     setReading(true);
   };
 
-  const handleRegenerate = () => {
-    const lastUserMessage = messages[messages.length - 2]?.text;
+  const handleRegenerate = (index) => {
+    const lastUserMessage = messages[index - 1]?.text;
     if (lastUserMessage) {
       setInput(lastUserMessage);
       setRegenerateMode(true);
@@ -162,7 +164,7 @@ const ConversationPage = () => {
                       <FaVolumeUp />
                     </button>
                     <button
-                      onClick={handleRegenerate}
+                      onClick={() => handleRegenerate(index)}
                       aria-label="Regenerate response"
                       className="text-gray-600 hover:text-orange-500"
                     >
